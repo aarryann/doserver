@@ -1,16 +1,10 @@
+//{"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIxIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.oM7HJV9tjc0TSdiVdS6jje0QgejmKa-uoPSdm1JVNJ4"}
+require('dotenv').config();
 const { ApolloServer, gql } = require('apollo-server');
 const resolvers1 = require('./resolvers');
 const config = require('./config.js');
 const Session = require('./models/Session.js');
-//const knex = require('knex')({
-//  client: 'mysql',
-//  connection: {
-//    host : 'localhost',
-//    user : 'appuser',
-//    password : 'appuserpw',
-//    database : 'doapp'
-//  }
-//});
+const utils = require('./helpers/utils.js');
 
 // This is a (sample) collection of books we'll be able to query
 // the GraphQL server for.  A more complete example might fetch
@@ -59,22 +53,23 @@ const resolvers = {
   Query: {
     books: () => books,
     user: async (_, { id }, ctx) => {
-      console.log(ctx);
-      return Session.getUserDetails(config.knex, id);
+      //console.log(ctx);
+      return Session.getUserDetails(ctx.conn.knex, id);
     },
   },
 };
 
-// In the most basic sense, the ApolloServer can be started
-// by passing type definitions (typeDefs) and the resolvers
-// responsible for fetching the data for those types.
-const server = new ApolloServer({ typeDefs, resolvers, context: ({ req, res }) => ({
-    knex: 'knex'
-  }) 
-});
+// Start the server
+const server = new ApolloServer({ typeDefs, resolvers, context: ({ req, res }) => {
+  const user = utils.getUserId(null, req);
+  return {
+    user,
+    conn: {
+      knex: config.knex 
+    }
+  };
+}});
 
-// This `listen` method launches a web-server.  Existing apps
-// can utilize middleware options, which we'll discuss later.
 server.listen().then(({ url }) => {
   console.log(`🚀  Server ready at ${url}`);
 });
