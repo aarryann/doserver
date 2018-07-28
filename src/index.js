@@ -1,13 +1,16 @@
 const { ApolloServer, gql } = require('apollo-server');
 const resolvers1 = require('./resolvers');
-const mysql = require('mysql2');
-// create the connection to database
-const connection = mysql.createConnection({
-  host: 'localhost',
-  user: 'appuser',
-  user: 'appuserpw',
-  database: 'doapp'
-});
+const config = require('./config.js');
+const Session = require('./models/Session.js');
+//const knex = require('knex')({
+//  client: 'mysql',
+//  connection: {
+//    host : 'localhost',
+//    user : 'appuser',
+//    password : 'appuserpw',
+//    database : 'doapp'
+//  }
+//});
 
 // This is a (sample) collection of books we'll be able to query
 // the GraphQL server for.  A more complete example might fetch
@@ -38,7 +41,16 @@ const typeDefs = gql`
   # (A "Mutation" type will be covered later on.)
   type Query {
     books: [Book]
+    user(id: Int!): User
   }
+
+  type User {
+    id: Int!
+    firstName: String
+    lastName: String
+    email: String
+  }
+
 `;
 
 // Resolvers define the technique for fetching the types in the
@@ -46,6 +58,10 @@ const typeDefs = gql`
 const resolvers = {
   Query: {
     books: () => books,
+    user: async (_, { id }, ctx) => {
+      console.log(ctx);
+      return Session.getUserDetails(config.knex, id);
+    },
   },
 };
 
@@ -53,10 +69,7 @@ const resolvers = {
 // by passing type definitions (typeDefs) and the resolvers
 // responsible for fetching the data for those types.
 const server = new ApolloServer({ typeDefs, resolvers, context: ({ req, res }) => ({
-    authScope: getScope(req.headers.authorization),
-    conn: {
-      mysql: ""
-    }
+    knex: 'knex'
   }) 
 });
 
