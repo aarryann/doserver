@@ -1,6 +1,10 @@
-const { getUserId } = require('../utils')
+const { getUserId } = require('../helpers/utils')
+const Session = require('../models/Session.js');
+//import { compareHash, encrypt } from '../../services/utils';
 
 const Query = {
+  Query: {
+/*
   feed(parent, args, ctx, info) {
     return ctx.db.query.posts({ where: { isPublished: true } }, info)
   },
@@ -28,29 +32,30 @@ const Query = {
   },
 
   boards: () => boards,
-
-  user: (_, { id }, {db}) => {
-    console.log(db);
-    const d = find(users, { id: id });
-    return d;
-  },
-
-  localAuth: async (_, { email, password }, { db }) => {
-    const rs = await db.executeSql('SELECT * FROM users WHERE email = ?', [email]);
-    if (rs.rows.length > 0 && compareHash(password, rs.rows.item(0).ENCRYPTED_PASSWORD)){
-      return {
-        user: {
-          id: rs.rows.item(0).ID,
-          firstName: rs.rows.item(0).FIRST_NAME,
-          lastName: rs.rows.item(0).LAST_NAME,
-          email: rs.rows.item(0).EMAIL,
-          password : encrypt(password)
+*/
+    user: async (_, { id }, ctx) => {
+      //console.log(ctx);
+      return Session.getUserDetails(ctx.conn.knex, id);
+    },
+/*
+    localAuth: async (_, { email, password }, { db }) => {
+      const rs = await db.executeSql('SELECT * FROM users WHERE email = ?', [email]);
+      if (rs.rows.length > 0 && compareHash(password, rs.rows.item(0).ENCRYPTED_PASSWORD)){
+        return {
+          user: {
+            id: rs.rows.item(0).ID,
+            firstName: rs.rows.item(0).FIRST_NAME,
+            lastName: rs.rows.item(0).LAST_NAME,
+            email: rs.rows.item(0).EMAIL,
+            password : encrypt(password)
+          }
         }
+      } else {
+        throw new Error('Invalid email or password');
       }
-    } else {
-      throw new Error('Invalid email or password');
     }
-  } 
+*/
+  }
 }
 
 module.exports = { Query }

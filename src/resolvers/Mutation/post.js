@@ -1,4 +1,4 @@
-const { getUserId } = require('../../utils')
+const { getUserId } = require('../../helpers/utils')
 
 const post = {
   async createDraft(parent, { title, text }, ctx, info) {

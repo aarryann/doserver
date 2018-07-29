@@ -5,13 +5,13 @@ const { post } = require('./Mutation/post')
 const { AuthPayload } = require('./AuthPayload')
 const { Associations } = require('./Associations')
 
-module.exports = {
+module.exports = [
   Query,
-  Mutation: {
-    ...auth,
-    ...post,
-  },
-  Subscription,
-  AuthPayload,
-  ...Associations,
-}
+//  Mutation: {
+//    ...auth,
+//    ...post,
+//  },
+//  Subscription,
+//  AuthPayload,
+  Associations,
+]
