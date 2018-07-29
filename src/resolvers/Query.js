@@ -37,24 +37,10 @@ const Query = {
       //console.log(ctx);
       return Session.getUserDetails(ctx.conn.knex, id);
     },
-    /*
-    getAuth: async (_, { email, password }, { ctx }) => {
-      const rs = await db.executeSql('SELECT * FROM users WHERE email = ?', [email]);
-      if (rs.rows.length > 0 && compareHash(password, rs.rows.item(0).ENCRYPTED_PASSWORD)){
-        return {
-          user: {
-            id: rs.rows.item(0).ID,
-            firstName: rs.rows.item(0).FIRST_NAME,
-            lastName: rs.rows.item(0).LAST_NAME,
-            email: rs.rows.item(0).EMAIL,
-            password : encrypt(password)
-          }
-        }
-      } else {
-        throw new Error('Invalid email or password');
-      }
+
+    getAuth: async (_, { email, password }, ctx) => {
+      return Session.getAuth(ctx.conn.knex, email, password );
     }
-    */
   }
 }
 

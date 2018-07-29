@@ -3,7 +3,7 @@
 module.exports = {
 
   development: {
-    client: 'mysql',
+    client: 'mysql2',
     connection: {
       database: 'doapp',
       user:     'appuser',

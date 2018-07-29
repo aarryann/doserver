@@ -18,7 +18,7 @@ const Session = `
   }
 
   type UserAuth {
-    jwt: String
+    token: String
     user: User!
   }
 
@@ -33,7 +33,7 @@ const Session = `
   type Query {
     boards: [Board]
     user(id: Int!): User
-    localAuth(email: String!, password: String!): UserAuth
+    getAuth(email: String!, password: String!): UserAuth
   }
 
   # this schema allows the following mutation:
