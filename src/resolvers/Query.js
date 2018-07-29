@@ -37,8 +37,8 @@ const Query = {
       //console.log(ctx);
       return Session.getUserDetails(ctx.conn.knex, id);
     },
-/*
-    localAuth: async (_, { email, password }, { db }) => {
+    /*
+    getAuth: async (_, { email, password }, { ctx }) => {
       const rs = await db.executeSql('SELECT * FROM users WHERE email = ?', [email]);
       if (rs.rows.length > 0 && compareHash(password, rs.rows.item(0).ENCRYPTED_PASSWORD)){
         return {
@@ -54,7 +54,7 @@ const Query = {
         throw new Error('Invalid email or password');
       }
     }
-*/
+    */
   }
 }
 
