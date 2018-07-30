@@ -3,7 +3,8 @@ const jwt = require('jsonwebtoken')
 
 const getUserDetails = async(knex, id) => {
   const rows = await knex.select({
-      id: 'id', firstName: 'first_name', lastName: 'last_name', email: 'email'
+      id: 'id', firstName: 'first_name', lastName: 'last_name', email: 'email', 
+      updatedAt: 'updated_at'
     })
     .from('users').where('id', id);
 
@@ -13,8 +14,8 @@ const getUserDetails = async(knex, id) => {
 const login = async(knex, email, password) => {
   try {
     const rows = await knex.select({
-        id: 'id', firstName: 'first_name', lastName: 'last_name', email: 'email',
-        password: 'password'
+        id: 'id', firstName: 'first_name', lastName: 'last_name', email: 'email'
+        , password: 'password', updatedAt: 'updated_at'
       })
       .from('users').where('email', email);
 

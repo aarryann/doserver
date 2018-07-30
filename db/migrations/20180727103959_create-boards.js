@@ -4,63 +4,63 @@ exports.up = (knex, Promise) => {
     return knex.schema
     .createTable('boards', (table) => {
       table.increments('id').unsigned().primary();
-      table.string('name');
-      table.string('slug');
-      table.integer('user_id').unsigned()
+      table.string('name').notNullable();
+      table.string('slug').unique().notNullable();
+      table.integer('user_id').notNullable().unsigned()
         .references('id')
         .inTable('users');
-      table.timestamps();
+      table.timestamp('updated_at').notNullable().defaultTo(knex.fn.now());
     })
     .createTable('user_boards', (table) => {
       table.increments('id').unsigned().primary();
-      table.integer('user_id').unsigned()
+      table.integer('user_id').notNullable().unsigned()
         .references('id')
         .inTable('users');
-      table.integer('board_id').unsigned()
+      table.integer('board_id').notNullable().unsigned()
         .references('id')
         .inTable('boards');
-      table.timestamps();
+      table.timestamp('updated_at').notNullable().defaultTo(knex.fn.now());
     })
     .createTable('lists', (table) => {
       table.increments('id').unsigned().primary();
-      table.string('name');
-      table.integer('position').unsigned();
-      table.integer('board_id').unsigned()
+      table.string('name').notNullable();
+      table.integer('position').notNullable().unsigned();
+      table.integer('board_id').notNullable().unsigned()
         .references('id')
         .inTable('boards');
-      table.timestamps();
+      table.timestamp('updated_at').notNullable().defaultTo(knex.fn.now());
     })
     .createTable('cards', (table) => {
       table.increments('id').unsigned().primary();
-      table.string('name');
+      table.string('name').notNullable();
       table.string('description');
-      table.integer('position').unsigned();
+      table.integer('position').notNullable().unsigned();
       table.string('tags');
-      table.integer('list_id').unsigned()
+      table.integer('list_id').notNullable().unsigned()
         .references('id')
         .inTable('lists');
-      table.timestamps();
+      table.timestamp('updated_at').notNullable().defaultTo(knex.fn.now());
     })
     .createTable('card_members', (table) => {
       table.increments('id').unsigned().primary();
-      table.integer('card_id').unsigned()
+      table.integer('card_id').notNullable().unsigned()
         .references('id')
         .inTable('cards');
-      table.integer('user_board_id').unsigned()
+      table.integer('user_board_id').notNullable().unsigned()
         .references('id')
         .inTable('cards');
-      table.timestamps();
+      table.timestamp('updated_at').notNullable().defaultTo(knex.fn.now());
     })
     .createTable('comments', (table) => {
       table.increments('id').unsigned().primary();
-      table.string('text');
-      table.integer('user_id').unsigned()
+      table.string('text').notNullable();
+      table.integer('user_id').notNullable().unsigned()
         .references('id')
         .inTable('users');
-      table.integer('card_id').unsigned()
+      table.integer('card_id').notNullable().unsigned()
         .references('id')
         .inTable('cards');
-      table.timestamps();
+      table.timestamp('updated_at').notNullable().defaultTo(knex.fn.now());
     });
 };
 
