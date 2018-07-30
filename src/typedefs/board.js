@@ -5,7 +5,9 @@ const Board = `
     lastName: String
     email: String
     password: String
-    boards: [Board] # the list of Boards by this User
+    ownedBoards: [Board] 
+    userBoards: [Board] 
+    otherBoards: [Board] 
   }
 
   type Board {
@@ -13,16 +15,41 @@ const Board = `
     name: String
     slug: String
     user: User
+    lists: [List]
+  }
+
+  type List {
+    id: Int!
+    name: String
+    position: Int
+    board: Board
+    cards: [Card]
+  }
+
+  type Card {
+    id: Int!
+    name: String
+    description: String
+    tags: String
+    position: Int
+    list: List
+    comments: [Comment]
+  }
+
+  type Comment {
+    id: Int!
+    text: String
+    user: User
+    card: Card
   }
 
   # the schema allows the following query:
   type Query {
-    ownedBoards(id: Int!): [Board]
+    ownedBoards(userId: Int!): [Board]
   }
 
   # this schema allows the following mutation:
   type Mutation {
-    upvoteBoard ( boardId: Int!): Board
     createBoard ( boardName: String!): Board
   }
 `;
