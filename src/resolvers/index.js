@@ -1,4 +1,4 @@
-const { Query } = require('./Query')
+const { Query } = require('./query')
 const { Subscription } = require('./Subscription')
 const { auth } = require('./Mutation/auth')
 const { post } = require('./Mutation/post')

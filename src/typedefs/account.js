@@ -1,4 +1,4 @@
-const Session = `
+const Account = `
   type AppVersions {
     id: Int!
     appVersion: String
@@ -31,7 +31,7 @@ const Session = `
 
   # the schema allows the following query:
   type Query {
-    boards: [Board]
+    ownedBoards(id: Int!): [Board]
     user(id: Int!): User
     getAuth(email: String!, password: String!): UserAuth
   }
@@ -44,4 +44,4 @@ const Session = `
   }
 `;
 
-module.exports = Session;
+module.exports = Account;

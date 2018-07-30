@@ -1,5 +1,5 @@
 const { getUserId } = require('../helpers/utils')
-const Session = require('../models/Session.js');
+const Account = require('../models/account.js');
 //import { compareHash, encrypt } from '../../services/utils';
 
 const Query = {
@@ -35,12 +35,16 @@ const Query = {
 */
     user: async (_, { id }, ctx) => {
       //console.log(ctx);
-      return Session.getUserDetails(ctx.conn.knex, id);
+      return Account.getUserDetails(ctx.conn.knex, id);
     },
 
     getAuth: async (_, { email, password }, ctx) => {
-      return Session.getAuth(ctx.conn.knex, email, password );
-    }
+      return Account.getAuth(ctx.conn.knex, email, password );
+    },
+
+    ownedBoards: async (_, { id }, ctx) => {
+      return Account.getUserDetails(ctx.conn.knex, id);
+    },
   }
 }
 

@@ -1,7 +1,7 @@
-const Session = require('./session');
+const Account = require('./account');
 const Book = require('./book');
 
 module.exports = [
-  Session,
+  Account,
   Book
 ]
