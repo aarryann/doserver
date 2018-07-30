@@ -6,12 +6,10 @@ const config = require('./config.js');
 const utils = require('./helpers/utils.js');
 
 // Start the server
-//const server = new ApolloServer({ typeDefs: [Schema, Query, 
-//...schemaTypeDefs], resolvers, context: ({ req, res }) => {
 const server = new ApolloServer({ schema , context: ({ req }) => {
-  const user = utils.getUserId(null, req);
+  const userId = utils.getUserId(null, req);
   return {
-    user,
+    userId,
     conn: {
       knex: config.knex 
     }

@@ -10,8 +10,8 @@ const getUserDetails = async(knex, id) => {
   return rows[0];
 } 
 
-const getAuth = async(knex, email, password) => {
-  try{
+const login = async(knex, email, password) => {
+  try {
     const rows = await knex.select({
         id: 'id', firstName: 'first_name', lastName: 'last_name', email: 'email',
         password: 'password'
@@ -47,5 +47,5 @@ const signup = async(knex, args, ctx, info) => {
 
 module.exports = {
   getUserDetails,
-  getAuth
+  login
 }
