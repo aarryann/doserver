@@ -19,6 +19,7 @@ exports.up = (knex, Promise) => {
       table.integer('board_id').notNullable().unsigned()
         .references('id')
         .inTable('boards');
+      table.unique(['user_id', 'board_id']);
       table.timestamp('updated_at').notNullable().defaultTo(knex.fn.now());
     })
     .createTable('lists', (table) => {
@@ -28,6 +29,7 @@ exports.up = (knex, Promise) => {
       table.integer('board_id').notNullable().unsigned()
         .references('id')
         .inTable('boards');
+      table.unique(['name', 'board_id']);
       table.timestamp('updated_at').notNullable().defaultTo(knex.fn.now());
     })
     .createTable('cards', (table) => {
@@ -39,6 +41,7 @@ exports.up = (knex, Promise) => {
       table.integer('list_id').notNullable().unsigned()
         .references('id')
         .inTable('lists');
+      table.unique(['name', 'list_id']);
       table.timestamp('updated_at').notNullable().defaultTo(knex.fn.now());
     })
     .createTable('card_members', (table) => {
@@ -49,6 +52,7 @@ exports.up = (knex, Promise) => {
       table.integer('user_board_id').notNullable().unsigned()
         .references('id')
         .inTable('cards');
+      table.unique(['user_board_id', 'card_id']);
       table.timestamp('updated_at').notNullable().defaultTo(knex.fn.now());
     })
     .createTable('comments', (table) => {
