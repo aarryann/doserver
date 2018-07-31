@@ -56,11 +56,13 @@ const getMemberBoards = async(knex, userId) => {
 } 
 
 const getOtherBoards = async(knex, userId) => {
+  const subquery = knex('user_boards').where('user_id', userId)
+  .select('board_id');
   const rows = await knex.select({
       id: 'id', name: 'name', slug: 'slug', userId: 'user_id', 
       updatedAt: 'updated_at'
     })
-    .from('boards').where('user_id', userId);
+    .from('boards').where('id', 'not in', subquery);
 
   return rows;
 } 
@@ -306,7 +308,7 @@ const removeCardMember = async(knex, userId, boardId, cardId) => {
       const rows = await trx.from('user_boards as ub')
         .innerJoin('card_members as cm', 'cm.user_board_id', 'ub.id')
         .where('ub.board_id', boardId).andWhere('ub.user_id', userId)
-        .where('cm.card_id', cardId)
+        .andWhere('cm.card_id', cardId)
         .select({ id: 'cm.id' })
 
       await trx.from('card_members')
