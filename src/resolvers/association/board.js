@@ -3,8 +3,11 @@ const Board = require('../../models/board.js');
 
 const BoardAssociation = {
   Board: {
-    user: async (board, _, ctx) => {
+    owner: async (board, _, ctx) => {
       return Account.getUserDetails(ctx.conn.knex, board.userId);
+    },
+    members: async (board, _, ctx) => {
+      return Board.getMembersForBoard(ctx.conn.knex, board.id);
     },
     lists: async (board, _, ctx) => {
       return Board.getListsForBoard(ctx.conn.knex, board.id);
@@ -23,6 +26,9 @@ const BoardAssociation = {
   Card: {
     list: async (card, _, ctx) => {
       return Board.getListDetails(ctx.conn.knex, card.listId);
+    },
+    members: async (card, _, ctx) => {
+      return Board.getCardMembers(ctx.conn.knex, card.id);
     },
     comments: async (card, _, ctx) => {
       return Board.getCommentsForCard(ctx.conn.knex, card.id);
