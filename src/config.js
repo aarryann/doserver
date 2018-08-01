@@ -7,14 +7,16 @@ Client.prototype.wrapIdentifier = (value) => {
   //const matched = value.match(/(.*?)(\[[0-9]\])/);
   //if (matched) return Client.prototype.wrapIdentifier.wrapIdentifier(matched[1]) + matched[2];
   let returnValue = value;
-  returnValue = `${value.replace(/([A-Z])/g, (_, s) => `_${s.toLowerCase()}`).replace(/"/g, '""')}`;
-  //console.log(`Value ${value} - ${returnValue}`);
+  //returnValue = `${value.replace(/([A-Z])/g, (_, s) => `_${s.toLowerCase()}`).replace(/"/g, '""')}`;
+  returnValue = `${value.replace(/_([a-zA-Z])/g, (_, s) => `${s.toUpperCase()}`).replace(/"/g, '""')}`;
+  console.log(`Client Value ${value} - ${returnValue}`);
   //return `"${value.replace(/([A-Z])/g, (_, s) => `_${s.toLowerCase()}`).replace(/"/g, '""')}"`;
   return returnValue;
 };
 Formatter.prototype.wrapAsIdentifier = value => {
   let returnValue = value;
-  returnValue = `${(value || '').replace(/"/g, '""')}`;
+  //returnValue = `${(value || '').replace(/"/g, '""')}`;
+  returnValue = `${value.replace(/_([a-zA-Z])/g, (_, s) => `${s.toUpperCase()}`).replace(/"/g, '""')}`;
   console.log(`Formatter Value ${value} - ${returnValue}`);
   return returnValue;
 };
