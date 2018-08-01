@@ -9,6 +9,9 @@ exports.up = (knex, Promise) => {
       table.integer('user_id').notNullable().unsigned()
         .references('id')
         .inTable('users');
+      table.integer('updated_user_id').notNullable().unsigned()
+        .references('id')
+        .inTable('users');
       table.timestamp('updated_at').notNullable().defaultTo(knex.fn.now());
     })
     .createTable('user_boards', (table) => {
@@ -20,6 +23,9 @@ exports.up = (knex, Promise) => {
         .references('id')
         .inTable('boards');
       table.unique(['user_id', 'board_id']);
+      table.integer('updated_user_id').notNullable().unsigned()
+        .references('id')
+        .inTable('users');
       table.timestamp('updated_at').notNullable().defaultTo(knex.fn.now());
     })
     .createTable('lists', (table) => {
@@ -30,6 +36,9 @@ exports.up = (knex, Promise) => {
         .references('id')
         .inTable('boards');
       table.unique(['name', 'board_id']);
+      table.integer('updated_user_id').notNullable().unsigned()
+        .references('id')
+        .inTable('users');
       table.timestamp('updated_at').notNullable().defaultTo(knex.fn.now());
     })
     .createTable('cards', (table) => {
@@ -42,6 +51,9 @@ exports.up = (knex, Promise) => {
         .references('id')
         .inTable('lists');
       table.unique(['name', 'list_id']);
+      table.integer('updated_user_id').notNullable().unsigned()
+        .references('id')
+        .inTable('users');
       table.timestamp('updated_at').notNullable().defaultTo(knex.fn.now());
     })
     .createTable('card_members', (table) => {
@@ -53,6 +65,9 @@ exports.up = (knex, Promise) => {
         .references('id')
         .inTable('cards');
       table.unique(['user_board_id', 'card_id']);
+      table.integer('updated_user_id').notNullable().unsigned()
+        .references('id')
+        .inTable('users');
       table.timestamp('updated_at').notNullable().defaultTo(knex.fn.now());
     })
     .createTable('comments', (table) => {
@@ -64,6 +79,9 @@ exports.up = (knex, Promise) => {
       table.integer('card_id').notNullable().unsigned()
         .references('id')
         .inTable('cards');
+      table.integer('updated_user_id').notNullable().unsigned()
+        .references('id')
+        .inTable('users');
       table.timestamp('updated_at').notNullable().defaultTo(knex.fn.now());
     });
 };

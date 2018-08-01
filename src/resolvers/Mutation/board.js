@@ -8,7 +8,8 @@ const BoardMutation = {
   createList: async (parent, { listName, boardId }, ctx, info) => {
     return Board.createList(ctx.conn.knex, listName, boardId);
   },
-  createCard: async (parent, { cardName, description, tags, listId }, ctx, info) => {
+  createCard: async (parent, { cardName, description, tags, listId }, 
+      ctx, info) => {
     return Board.createCard(ctx.conn.knex, cardName, description, 
       tags, listId);
   },

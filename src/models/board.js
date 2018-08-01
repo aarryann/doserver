@@ -2,10 +2,7 @@ const getBoardMembers = async(knex, boardId) => {
   const rows = await knex.from('users as u')
     .innerJoin('user_boards as ub', 'ub.user_id', 'u.id')
     .where('ub.board_id', boardId)
-    .select({
-      id: 'u.id', firstName: 'first_name', lastName: 'last_name', 
-      email: 'email', updatedAt: 'u.updated_at'
-    })
+    .select('u.*');
 
   return rows;
 } 
@@ -15,19 +12,13 @@ const getCardMembers = async(knex, cardId) => {
     .innerJoin('user_boards as ub', 'ub.user_id', 'u.id')
     .innerJoin('card_members as cm', 'cm.user_board_id', 'ub.id')
     .where('cm.card_id', cardId)
-    .select({
-      id: 'u.id', firstName: 'first_name', lastName: 'last_name', 
-      email: 'email', updatedAt: 'u.updated_at'
-    })
+    .select('u.*');
 
   return rows;
 } 
 
 const getBoardDetails = async(knex, boardId) => {
-  const rows = await knex.select({
-      id: 'id', name: 'name', slug: 'slug', userId: 'user_id', 
-      updatedAt: 'updated_at'
-    })
+  const rows = await knex.select('*')
     .from('boards').where('id', boardId);
 
   return rows[0];

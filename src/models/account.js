@@ -2,10 +2,7 @@ const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 
 const getUserDetails = async(knex, id) => {
-  const rows = await knex.select({
-      id: 'id', firstName: 'first_name', lastName: 'last_name', email: 'email', 
-      updatedAt: 'updated_at'
-    })
+  const rows = await knex.select('*')
     .from('users').where('id', id);
 
   return rows[0];
@@ -13,10 +10,7 @@ const getUserDetails = async(knex, id) => {
 
 const login = async(knex, email, password) => {
   try {
-    const rows = await knex.select({
-        id: 'id', firstName: 'first_name', lastName: 'last_name', email: 'email'
-        , password: 'password', updatedAt: 'updated_at'
-      })
+    const rows = await knex.select('*')
       .from('users').where('email', email);
 
     const user = rows[0];
