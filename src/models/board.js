@@ -153,12 +153,13 @@ const createBoard = async(knex, boardName, userId) => {
 const createList = async(knex, listName, boardId) => {
   return knex.transaction( async (trx) => {
     try {
-      const maxPos = await trx.max('position')
-        .from('lists').where('board_id', boardId);
-
+      const maxPos = await trx('lists').max('position as a')
+        .where('board_id', boardId);
       let position = 1024;
       try {
-        position += parseInt(maxPos[0]);
+        if(maxPos[0].a !== null){
+          position += parseInt(maxPos[0].a);
+        }
       } catch(e){}
 
       const insertedList = await trx.into('lists').insert({ 

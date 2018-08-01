@@ -9,26 +9,20 @@ const BoardMutation = {
     return Board.createList(ctx.conn.knex, listName, boardId);
   },
   createCard: async (parent, { cardName, description, tags, listId }, ctx, info) => {
-    return Board.createList(ctx.conn.knex, cardName, description, 
+    return Board.createCard(ctx.conn.knex, cardName, description, 
       tags, listId);
   },
   addCardComment: async (parent, { text, userId, cardId }, ctx, info) => {
-    return Board.createList(ctx.conn.knex, text, userId, cardId);
+    return Board.addCardComment(ctx.conn.knex, text, userId, cardId);
   },
   addBoardMember: async (parent, { email, boardId }, ctx, info) => {
-    return Board.createList(ctx.conn.knex, email, boardId);
+    return Board.addBoardMember(ctx.conn.knex, email, boardId);
   },
   addCardMember: async (parent, { userId, boardId, cardId }, ctx, info) => {
-    return Board.createList(ctx.conn.knex, userId, boardId, cardId);
+    return Board.addCardMember(ctx.conn.knex, userId, boardId, cardId);
   },
   removeCardMember: async (parent, { userId, boardId, cardId }, ctx, info) => {
-    return Board.createList(ctx.conn.knex, userId, boardId, cardId);
-  },
-  removeCardMember: async (parent, { listName, boardId }, ctx, info) => {
-    return Board.createList(ctx.conn.knex, listName, boardId);
-  },
-  createList: async (parent, { listName, boardId }, ctx, info) => {
-    return Board.createList(ctx.conn.knex, listName, boardId);
+    return Board.removeCardMember(ctx.conn.knex, userId, boardId, cardId);
   },
 }
 
