@@ -4,8 +4,7 @@ const Board = require('../../models/board.js');
 const BoardAssociation = {
   Board: {
     owner: async (board, _, ctx) => {
-      console.log(board);
-      return Account.getUserDetails(ctx.conn.knex, board.userId);
+      return Account.getUserDetails(ctx.conn.knex, board.owner);
     },
     members: async (board, _, ctx) => {
       return Board.getMembersForBoard(ctx.conn.knex, board.id);

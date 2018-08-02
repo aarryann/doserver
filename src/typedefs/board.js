@@ -53,9 +53,9 @@ const Board = `
 
   # this schema allows the following mutation:
   type Mutation {
-    createBoard ( boardName: String! ): Board
-    createList ( listName: String!, boardId: Int! ): List
-    createCard ( cardName: String!, description: String, tags: String, listId:Int! ): Card
+    createBoard ( name: String!, owner: Int! ): Board
+    createList ( name: String!, boardId: Int! ): List
+    createCard ( name: String!, description: String, tags: String, listId:Int! ): Card
     addCardComment ( text: String!, userId: Int!, cardId: Int! ): Card
     addBoardMember ( email: String!, boardId: Int! ): User
     addCardMember ( userId: Int!, boardId: Int!, cardId: Int! ): Card

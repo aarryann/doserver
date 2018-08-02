@@ -1,7 +1,7 @@
 const getBoardMembers = async(knex, boardId) => {
   const rows = await knex.from('users as u')
-    .innerJoin('user_boards as ub', 'ub.user_id', 'u.id')
-    .where('ub.board_id', boardId)
+    .innerJoin('user_boards as ub', 'ub.userId', 'u.id')
+    .where('ub.boardId', boardId)
     .select('u.*');
 
   return rows;
@@ -9,9 +9,9 @@ const getBoardMembers = async(knex, boardId) => {
 
 const getCardMembers = async(knex, cardId) => {
   const rows = await knex.from('users as u')
-    .innerJoin('user_boards as ub', 'ub.user_id', 'u.id')
-    .innerJoin('card_members as cm', 'cm.user_board_id', 'ub.id')
-    .where('cm.card_id', cardId)
+    .innerJoin('user_boards as ub', 'ub.userId', 'u.id')
+    .innerJoin('card_members as cm', 'cm.userBoardId', 'ub.id')
+    .where('cm.cardId', cardId)
     .select('u.*');
 
   return rows;
@@ -26,23 +26,23 @@ const getBoardDetails = async(knex, boardId) => {
 
 const getOwnedBoards = async(knex, userId) => {
   const rows = await knex.select('*')
-    .from('boards').where('user_id', userId);
+    .from('boards').where('owner', userId);
 
   return rows;
 } 
 
 const getMemberBoards = async(knex, userId) => {
   const rows = await knex.from('boards as b')
-    .innerJoin('user_boards as ub', 'ub.board_id', 'b.id')
-    .where('ub.user_id', userId)
+    .innerJoin('user_boards as ub', 'ub.boardId', 'b.id')
+    .where('ub.userId', userId)
     .select('b.*');
 
   return rows;
 } 
 
 const getOtherBoards = async(knex, userId) => {
-  const subquery = knex('user_boards').where('user_id', userId)
-  .select('board_id');
+  const subquery = knex('user_boards').where('owner', userId)
+  .select('boardId');
   const rows = await knex.select('*')
     .from('boards').where('id', 'not in', subquery);
 
@@ -58,7 +58,7 @@ const getListDetails = async(knex, listId) => {
 
 const getListsForBoard = async(knex, boardId) => {
   const rows = await knex.select('*')
-    .from('lists').where('board_id', boardId);
+    .from('lists').where('boardId', boardId);
 
   return rows;
 } 
@@ -72,218 +72,177 @@ const getCardDetails = async(knex, cardId) => {
 
 const getCardsForList = async(knex, listId) => {
   const rows = await knex.select('*')
-    .from('cards').where('list_id', listId);
+    .from('cards').where('listId', listId);
 
   return rows;
 } 
 
 const getCommentsForCard = async(knex, cardId) => {
   const rows = await knex.select('*')
-    .from('comments').where('card_id', cardId);
+    .from('comments').where('cardId', cardId);
 
   return rows;
 } 
 
-const createBoard = async(knex, boardName, userId) => {
+const createBoard = async(knex, board) => {
+  board.slug = board.name.toLowerCase().replace(/[^\w-]+/g, '-');
+  board.updatedAt = knex.fn.now();
   return knex.transaction( async (trx) => {
-    try {
-      const insertedBoard = await trx.into('boards').insert({ 
-          name: boardName, 
-          slug: boardName.toLowerCase().replace(/[^\w-]+/g, '-'),
-          user_id: userId, updated_at: knex.fn.now()
-        });
+    const insertedBoard = await trx('boards')
+    .insert( board );
+    board.id = insertedBoard[0];
       
-      await trx.into('user_boards').insert({ 
-          user_id: userId, 
-          board_id: insertedBoard[0], updated_at: knex.fn.now()
-        });
-
-      const rows = await trx.select('*')
-        .from('boards').where('id', insertedBoard[0]);
-
-      return rows;
-
-    } catch(e) {
-      throw new Error('Board add failed');
-    }
+    await trx('user_boards').insert({ 
+        userId: board.owner, boardId: board.id, 
+        updatedUserId: board.updatedUserId, updatedAt: board.updatedAt
+      });
+      
+    return board;
   })
-  .then(function(boardResultSet) {
-    return boardResultSet[0];
+  .then(function(board) {
+    return board;
   })
-  .catch(function(error) {
-    throw new Error('Board add failed');
+  .catch(function(e) {
+    throw new Error('Board add failed: '+ error.message);
   });  
 } 
 
-const createList = async(knex, listName, boardId) => {
+const createList = async(knex, list) => {
+  list.updatedAt = knex.fn.now();
   return knex.transaction( async (trx) => {
+    const maxPos = await trx('lists').max('position as a')
+      .where('boardId', list.boardId);
+    let position = 1024;
     try {
-      const maxPos = await trx('lists').max('position as a')
-        .where('board_id', boardId);
-      let position = 1024;
-      try {
-        if(maxPos[0].a !== null){
-          position += parseInt(maxPos[0].a);
-        }
-      } catch(e){}
+      if(maxPos[0].a !== null){
+        position += parseInt(maxPos[0].a);
+      }
+    } catch(e){}
+    list.position = position;
 
-      const insertedList = await trx.into('lists').insert({ 
-          name: listName, position: position,
-          board_id: boardId, updated_at: knex.fn.now()
-        });
+    const insertedList = await trx('lists').insert( list );
+    list.id = insertedList[0];
 
-      const rows = await trx.select('*')
-        .from('lists').where('id', insertedList[0]);
-
-      return rows;
-
-    } catch(e) {
-      throw new Error('List add failed');
-    }
+    return list;
   })
-  .then(function(listResultSet) {
-    return listResultSet[0];
+  .then(function(list) {
+    return list;
   })
-  .catch(function(error) {
-    throw new Error('List add failed');
+  .catch(function(e) {
+    throw new Error('List add failed: ' + e.message);
   });  
 } 
 
 const createCard = async(knex, cardName, description, tags, listId) => {
   return knex.transaction( async (trx) => {
+    const maxPos = await trx.max('position')
+      .from('cards').where('listId', listId);
+
+    let position = 1024;
     try {
-      const maxPos = await trx.max('position')
-        .from('cards').where('list_id', listId);
+      position += parseInt(maxPos[0]);
+    } catch(e){}
 
-      let position = 1024;
-      try {
-        position += parseInt(maxPos[0]);
-      } catch(e){}
+    const insertedCard = await trx.into('cards').insert({ 
+        name: cardName, position: position, description: description,
+        tags: tags, listId: listId, updatedAt: knex.fn.now()
+      });
 
-      const insertedCard = await trx.into('cards').insert({ 
-          name: cardName, position: position, description: description,
-          tags: tags, list_id: listId, updated_at: knex.fn.now()
-        });
+    const rows = await trx('cards').select('*')
+      .where('id', insertedCard[0]);
 
-      const rows = await trx.select('*')
-        .from('cards').where('id', insertedCard[0]);
-
-      return rows;
-
-    } catch(e) {
-      throw new Error('Card add failed');
-    }
+    return rows;
   })
   .then(function(cardResultSet) {
     return cardResultSet[0];
   })
-  .catch(function(error) {
-    throw new Error('Card add failed');
+  .catch(function(e) {
+    throw new Error('Card add failed: ' + e.message);
   });  
 } 
 
 const addCardComment = async(knex, text, userId, cardId) => {
   return knex.transaction( async (trx) => {
-    try {
-      const insertedComment = await trx.into('comments').insert({ 
-          text: text, userId: userId, cardId: cardId, updated_at: knex.fn.now()
-        });
+    const insertedComment = await trx.into('comments').insert({ 
+        text: text, userId: userId, cardId: cardId, updatedAt: knex.fn.now()
+      });
 
-      const rows = await trx.select('*')
-        .from('cards').where('id', insertedCard[0]);
+    const rows = await trx('cards').select('*')
+      .where('id', insertedCard[0]);
 
-      return rows;
-
-    } catch(e) {
-      throw new Error('Comment add failed');
-    }
+    return rows;
   })
   .then(function(cardResultSet) {
     return cardResultSet[0];
   })
-  .catch(function(error) {
-    throw new Error('Comment add failed');
+  .catch(function(e) {
+    throw new Error('Comment add failed: ' + e.message);
   });  
 } 
 
 const addBoardMember = async(knex, email, boardId) => {
   return knex.transaction( async (trx) => {
-    try {
-      const rows = await trx.select('*')
-        .from('users').where('email', email);
+    const rows = await trx('cards').select('*')
+      .where('email', email);
 
-      const insertedCard = await trx.into('user_boards').insert({ 
-          user_id: rows[0].id, board_id: boardId, updated_at: knex.fn.now()
-        });
+    const insertedCard = await trx.into('user_boards').insert({ 
+        userId: rows[0].id, boardId: boardId, updatedAt: knex.fn.now()
+      });
 
-      return rows;
-
-    } catch(e) {
-      throw new Error('Add Board member failed');
-    }
+    return rows;
   })
   .then(function(memberResultSet) {
     return memberResultSet[0];
   })
-  .catch(function(error) {
-    throw new Error('Add Board member failed');
+  .catch(function(e) {
+    throw new Error('Add Board member failed: ' + e.message);
   });  
 } 
 
 const addCardMember = async(knex, userId, boardId, cardId) => {
   return knex.transaction( async (trx) => {
-    try {
-      let rows = await trx.from('user_boards as ub')
-        .where('ub.board_id', boardId).andWhere('ub.user_id', userId)
-        .select({ id: 'ub.id' })
+    let rows = await trx.from('user_boards as ub')
+      .where('ub.boardId', boardId).andWhere('ub.userId', userId)
+      .select({ id: 'ub.id' })
 
-      await trx.into('card_members').insert({ 
-          card_id: cardId, user_board_id: rows[0].id, updated_at: knex.fn.now()
-        });
+    await trx.into('card_members').insert({ 
+        cardId: cardId, userBoardId: rows[0].id, updatedAt: knex.fn.now()
+      });
 
-      rows = await trx.select('*')
-        .from('cards').where('id', cardId);
+    rows = await trx('cards').select('*')
+      .where('id', cardId);
 
-      return rows;
-
-    } catch(e) {
-      throw new Error('Add card member failed');
-    }
+    return rows;
   })
   .then(function(cardResultSet) {
     return cardResultSet[0];
   })
-  .catch(function(error) {
-    throw new Error('Add card member failed');
+  .catch(function(e) {
+    throw new Error('Add card member failed: ' + e.message);
   });  
 } 
 
 const removeCardMember = async(knex, userId, boardId, cardId) => {
   return knex.transaction( async (trx) => {
-    try {
-      const rows = await trx.from('user_boards as ub')
-        .innerJoin('card_members as cm', 'cm.user_board_id', 'ub.id')
-        .where('ub.board_id', boardId).andWhere('ub.user_id', userId)
-        .andWhere('cm.card_id', cardId)
-        .select({ id: 'cm.id' })
+    const rows = await trx.from('user_boards as ub')
+      .innerJoin('card_members as cm', 'cm.userBoardId', 'ub.id')
+      .where('ub.boardId', boardId).andWhere('ub.userId', userId)
+      .andWhere('cm.cardId', cardId)
+      .select({ id: 'cm.id' })
 
-      await trx.from('card_members')
-        .where('cm.id', rows[0].id).del();
+    await trx.from('card_members')
+      .where('cm.id', rows[0].id).del();
 
-      rows = await trx.select('*')
-        .from('cards').where('id', cardId);
+    rows = await trx('cards').select('*')
+      .where('id', cardId);
 
-      return rows;
-
-    } catch(e) {
-      throw new Error('Remove card member failed');
-    }
+    return rows;
   })
   .then(function(cardResultSet) {
     return cardResultSet[0];
   })
-  .catch(function(error) {
-    throw new Error('Remove card member failed');
+  .catch(function(e) {
+    throw new Error('Remove card member failed: ' + e.message);
   });  
 } 
 

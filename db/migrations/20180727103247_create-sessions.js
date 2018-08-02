@@ -4,20 +4,20 @@ exports.up = (knex, Promise) => {
     return knex.schema
     .createTable('app_versions', (table) => {
       table.increments('id').unsigned().primary();
-      table.string('app_version').notNullable();
-      table.string('db_version').notNullable();
-      table.string('upgrade_mode').notNullable();
+      table.string('appVersion').notNullable();
+      table.string('dbVersion').notNullable();
+      table.string('upgradeMode').notNullable();
       table.string('status').notNullable();
-      table.unique(['app_version', 'db_version']);
-      table.timestamp('updated_at').notNullable().defaultTo(knex.fn.now());
+      table.unique(['appVersion', 'dbVersion']);
+      table.timestamp('updatedAt').notNullable().defaultTo(knex.fn.now());
     })
     .createTable('users', (table) => {
       table.increments('id').unsigned().primary();
-      table.string('first_name').notNullable();
-      table.string('last_name').notNullable();
+      table.string('firstName').notNullable();
+      table.string('lastName').notNullable();
       table.string('email').unique().notNullable();
       table.string('password').notNullable();
-      table.timestamp('updated_at').notNullable().defaultTo(knex.fn.now());
+      table.timestamp('updatedAt').notNullable().defaultTo(knex.fn.now());
     });
 };
 
