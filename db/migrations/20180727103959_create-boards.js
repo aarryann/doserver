@@ -32,7 +32,7 @@ exports.up = (knex, Promise) => {
       table.increments('id').unsigned().primary();
       table.string('name').notNullable();
       table.integer('position').notNullable().unsigned();
-      table.integer('boardid').notNullable().unsigned()
+      table.integer('boardId').notNullable().unsigned()
         .references('id')
         .inTable('boards');
       table.unique(['name', 'boardId']);

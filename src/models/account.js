@@ -2,9 +2,8 @@ const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 
 const getUserDetails = async(knex, id) => {
-  console.log(id);
-  const rows = await knex.select('id')
-    .from('users').where('id', id);
+  const rows = await knex('users').select('*')
+    .where('id', id);
 
   return rows[0];
 } 

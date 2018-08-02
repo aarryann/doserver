@@ -52,6 +52,7 @@ const getOtherBoards = async(knex, userId) => {
 const getListDetails = async(knex, listId) => {
   const rows = await knex.select('*')
     .from('lists').where('id', listId);
+    console.log(rows[0]);
 
   return rows[0];
 } 
@@ -99,9 +100,7 @@ const createBoard = async(knex, board) => {
       
     return board;
   })
-  .then(function(board) {
-    return board;
-  })
+  .then((board) => board)
   .catch(function(e) {
     throw new Error('Board add failed: '+ error.message);
   });  
@@ -125,40 +124,34 @@ const createList = async(knex, list) => {
 
     return list;
   })
-  .then(function(list) {
-    return list;
-  })
+  .then((list) => list)
   .catch(function(e) {
     throw new Error('List add failed: ' + e.message);
   });  
 } 
 
-const createCard = async(knex, cardName, description, tags, listId) => {
+const createCard = async(knex, card) => {
+  card.updatedAt = knex.fn.now();
   return knex.transaction( async (trx) => {
-    const maxPos = await trx.max('position')
-      .from('cards').where('listId', listId);
+    const maxPos = await trx('cards').max('position as a')
+      .where('listId', card.listId);
 
     let position = 1024;
     try {
-      position += parseInt(maxPos[0]);
+      if(maxPos[0].a !== null){
+        position += parseInt(maxPos[0].a);
+      }
     } catch(e){}
+    card.position = position;
+    console.log(card);
 
-    const insertedCard = await trx.into('cards').insert({ 
-        name: cardName, position: position, description: description,
-        tags: tags, listId: listId, updatedAt: knex.fn.now()
-      });
+    const insertedCard = await trx.into('cards').insert( card );
+    card.id = insertedCard[0];
 
-    const rows = await trx('cards').select('*')
-      .where('id', insertedCard[0]);
-
-    return rows;
+    return card;
   })
-  .then(function(cardResultSet) {
-    return cardResultSet[0];
-  })
-  .catch(function(e) {
-    throw new Error('Card add failed: ' + e.message);
-  });  
+  .then((card) => card)
+  .catch((e) => { throw new Error('Card add failed: ' + e.message) });  
 } 
 
 const addCardComment = async(knex, text, userId, cardId) => {
@@ -172,9 +165,7 @@ const addCardComment = async(knex, text, userId, cardId) => {
 
     return rows;
   })
-  .then(function(cardResultSet) {
-    return cardResultSet[0];
-  })
+  .then((card) => card)
   .catch(function(e) {
     throw new Error('Comment add failed: ' + e.message);
   });  
@@ -191,9 +182,7 @@ const addBoardMember = async(knex, email, boardId) => {
 
     return rows;
   })
-  .then(function(memberResultSet) {
-    return memberResultSet[0];
-  })
+  .then((member) => member)
   .catch(function(e) {
     throw new Error('Add Board member failed: ' + e.message);
   });  
@@ -214,9 +203,7 @@ const addCardMember = async(knex, userId, boardId, cardId) => {
 
     return rows;
   })
-  .then(function(cardResultSet) {
-    return cardResultSet[0];
-  })
+  .then((card) => card)
   .catch(function(e) {
     throw new Error('Add card member failed: ' + e.message);
   });  
@@ -238,9 +225,7 @@ const removeCardMember = async(knex, userId, boardId, cardId) => {
 
     return rows;
   })
-  .then(function(cardResultSet) {
-    return cardResultSet[0];
-  })
+  .then((card) => card)
   .catch(function(e) {
     throw new Error('Remove card member failed: ' + e.message);
   });  

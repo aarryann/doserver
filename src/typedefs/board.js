@@ -55,7 +55,8 @@ const Board = `
   type Mutation {
     createBoard ( name: String!, owner: Int! ): Board
     createList ( name: String!, boardId: Int! ): List
-    createCard ( name: String!, description: String, tags: String, listId:Int! ): Card
+    createCard ( name: String!, description: String, tags: String, 
+      listId:Int! ): Card
     addCardComment ( text: String!, userId: Int!, cardId: Int! ): Card
     addBoardMember ( email: String!, boardId: Int! ): User
     addCardMember ( userId: Int!, boardId: Int!, cardId: Int! ): Card
