@@ -58,7 +58,7 @@ const Board = `
     createCard ( name: String!, description: String, tags: String, 
       listId:Int! ): Card
     addCardComment ( text: String!, userId: Int!, cardId: Int! ): Card
-    addBoardMember ( email: String!, boardId: Int! ): User
+    addBoardMember ( email: String!, boardId: Int! ): Board
     addCardMember ( userId: Int!, boardId: Int!, cardId: Int! ): Card
     removeCardMember ( userId: Int!, boardId: Int!, cardId: Int! ): Card
   }

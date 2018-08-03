@@ -24,7 +24,7 @@ const BoardMutation = {
     return Board.addCardMember(ctx.conn.knex, userId, boardId, {cardId, updatedUserId: ctx.userId});
   },
   removeCardMember: async (parent, { userId, boardId, cardId }, ctx, info) => {
-    return Board.removeCardMember(ctx.conn.knex, userId, boardId, {cardId, updatedUserId: ctx.userId});
+    return Board.removeCardMember(ctx.conn.knex, userId, boardId, cardId);
   },
 }
 
