@@ -52,7 +52,6 @@ const getOtherBoards = async(knex, userId) => {
 const getListDetails = async(knex, listId) => {
   const rows = await knex('lists').select('*')
     .where('id', listId);
-    console.log(rows[0]);
 
   return rows[0];
 } 
@@ -65,6 +64,7 @@ const getListsForBoard = async(knex, boardId) => {
 } 
 
 const getCardDetails = async(knex, cardId) => {
+  console.log(cardId);
   const rows = await knex('cards').select('*')
     .where('id', cardId);
 
@@ -139,7 +139,6 @@ const createCard = async(knex, card) => {
       }
     } catch(e){}
     card.position = position;
-    console.log(card);
 
     const insertedCard = await trx('cards').insert( card );
     card.id = insertedCard[0];
@@ -156,16 +155,18 @@ const addCardComment = async(knex, comment) => {
     const insertedComment = await trx('comments').insert( comment );
     comment.id = insertedComment[0];
 
-    return comment;
+    rows = await trx('cards').select('*')
+      .where('id', comment.cardId);
+    return rows;
   })
-  .then((addedComment) => addedComment)
+  .then((cards) => cards[0])
   .catch((e) => { throw new Error('Comment add failed: ' + e.message); });  
 } 
 
 const addBoardMember = async(knex, email, userBoard) => {
   userBoard.updatedAt = knex.fn.now();
   return knex.transaction( async (trx) => {
-    const rows = await trx('users').select('*')
+    let rows = await trx('users').select('*')
       .where('email', email);
     userBoard.userId = rows[0].id; 
     const insertedMember = await trx('user_boards').insert( userBoard ); 
@@ -199,14 +200,14 @@ const addCardMember = async(knex, userId, boardId, cardMember) => {
 
 const removeCardMember = async(knex, userId, boardId, cardId) => {
   return knex.transaction( async (trx) => {
-    const rows = await trx('user_boards as ub')
+    let rows = await trx('user_boards as ub')
       .innerJoin('card_members as cm', 'cm.userBoardId', 'ub.id')
       .where('ub.boardId', boardId).andWhere('ub.userId', userId)
       .andWhere('cm.cardId', cardId)
       .select({ id: 'cm.id' })
 
     await trx('card_members')
-      .where('cm.id', rows[0].id).del();
+      .where('id', rows[0].id).del();
 
     rows = await trx('cards').select('*')
       .where('id', cardId);

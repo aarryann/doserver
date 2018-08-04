@@ -7,7 +7,7 @@ const BoardAssociation = {
       return Account.getUserDetails(ctx.conn.knex, board.owner);
     },
     members: async (board, _, ctx) => {
-      return Board.getMembersForBoard(ctx.conn.knex, board.id);
+      return Board.getBoardMembers(ctx.conn.knex, board.id);
     },
     lists: async (board, _, ctx) => {
       return Board.getListsForBoard(ctx.conn.knex, board.id);
