@@ -6,11 +6,18 @@ const utils = require('./helpers/utils.js');
 
 // Start the server
 const server = new ApolloServer({ schema , context: ({ req }) => {
-  const userId = utils.getUserId(null, req);
+  const queryBody = req.body.query;
+  let userId = 0;
+  let token;
+  if(queryBody.indexOf("login") === -1 && queryBody.indexOf("signup") === -1){
+    ({ userId, token } = utils.getUserId(null, req));
+    //console.log(userId);
+  }
   return {
     userId,
+    token,
     conn: {
-      knex: config.knex 
+      knex: config.knex
     }
   };
 }});

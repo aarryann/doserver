@@ -20,7 +20,8 @@ function getUserId(ctx, req) {
   if (Authorization) {
     const token = Authorization.replace('Bearer ', '');
     const { userId } = jwt.verify(token, process.env.APP_SECRET);
-    return userId;
+    //console.log(userId);
+    return { userId, token };
   }
 
   throw new AuthError();

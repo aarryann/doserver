@@ -29,6 +29,7 @@ const Account = `
   # this schema allows the following mutation:
   type Mutation {
     login ( email: String!, password: String! ): UserAuth
+    currentUser: UserAuth
   }
 `;
 
