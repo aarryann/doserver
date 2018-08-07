@@ -1,3 +1,4 @@
+const Account = require('../../models/account.js');
 const Board = require('../../models/board.js');
 
 const AccountAssociation = {
@@ -12,6 +13,12 @@ const AccountAssociation = {
       return Board.getOtherBoards(ctx.conn.knex, user.id);
     },
   },
+
+  UserAuth: {
+    user: async (userAuth, _, ctx) => {
+      return Account.getUserDetails(ctx.conn.knex, userAuth.userId);
+    },
+  }
 
 }
 

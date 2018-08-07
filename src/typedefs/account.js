@@ -17,19 +17,20 @@ const Account = `
   }
 
   type UserAuth {
-    token: String
-    user: User!
+    userId: Int!
+    token: String!
+    user: User
   }
 
   # the schema allows the following query:
   type Query {
     user(id: Int!): User
+    currentUser: UserAuth
   }
 
   # this schema allows the following mutation:
   type Mutation {
     login ( email: String!, password: String! ): UserAuth
-    currentUser: UserAuth
   }
 `;
 

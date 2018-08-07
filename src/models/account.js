@@ -20,8 +20,8 @@ const login = async(knex, email, password) => {
     }
 
     return {
-      token: jwt.sign({ userId: user.id }, process.env.APP_SECRET),
-      user
+      userId: user.id,
+      token: jwt.sign({ userId: user.id }, process.env.APP_SECRET)
     }
   } catch(e){
       throw new Error('Invalid email or password');
@@ -30,16 +30,14 @@ const login = async(knex, email, password) => {
 
 const currentUser = async(knex, userId, token) => {
   try {
-    //console.log(userId);
-    //console.log(token);
     const rows = await knex.select('*')
       .from('users').where('id', userId);
 
     const user = rows[0];
 
     return {
-      token: token,
-      user
+      userId,
+      token: token
     }
   } catch(e){
       throw new Error('Invalid user');
@@ -53,8 +51,8 @@ const signup = async(knex, args, ctx, info) => {
   })
 
   return {
-    token: jwt.sign({ userId: user.id }, process.env.APP_SECRET),
-    user,
+    userId: user.id,
+    token: jwt.sign({ userId: user.id }, process.env.APP_SECRET)
   }
 }
 
