@@ -3,6 +3,9 @@ const Board = require('../../models/board.js');
 
 const BoardMutation = {
   createBoard: async (parent, { name, owner }, ctx, info) => {
+    if(!owner){
+      owner = ctx.userId;
+    }
     return Board.createBoard(ctx.conn.knex, {name, owner, 
       updatedUserId: ctx.userId});
   },
