@@ -6,6 +6,7 @@ const utils = require('./helpers/utils.js');
 
 // Start the server
 const server = new ApolloServer({
+  cors: true,
   schema,
   context: ({ req }) => {
     const queryBody = req.body.query;
@@ -15,8 +16,8 @@ const server = new ApolloServer({
       queryBody.indexOf('login') === -1 &&
       queryBody.indexOf('signup') === -1
     ) {
-      //({ userId, token } = utils.getUserId(null, req));
-      //console.log(userId);
+      ({ userId, token } = utils.getUserId(null, req));
+      console.log(userId);
     }
     return {
       userId,
