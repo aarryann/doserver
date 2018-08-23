@@ -17,7 +17,6 @@ const server = new ApolloServer({
       queryBody.indexOf('signup') === -1
     ) {
       ({ userId, token } = utils.getUserId(null, req));
-      console.log(userId);
     }
     return {
       userId,
