@@ -6,7 +6,7 @@ const BOARD_ADDED = 'BOARD_ADDED';
 const BoardSubscription = {
   boardCreated: {
     subscribe: (parent, args, ctx, info) =>
-      ctx.pubsub.asyncIterator([BOARD_ADDED])
+      ctx.conn.pubsub.asyncIterator([BOARD_ADDED])
   }
 };
 

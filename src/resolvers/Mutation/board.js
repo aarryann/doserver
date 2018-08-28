@@ -11,7 +11,7 @@ const BoardMutation = {
       owner,
       updatedUserId: ctx.userId
     });
-    ctx.pubsub.publish('boardCreated', { boardCreated: board }); // trigger a change to all subscriptions to a new board
+    ctx.conn.pubsub.publish('boardCreated', { boardCreated: board }); // trigger a change to all subscriptions to a new board
     return board;
   },
   createList: async (parent, { name, boardId }, ctx, info) => {
