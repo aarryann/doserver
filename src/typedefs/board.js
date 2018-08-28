@@ -62,6 +62,10 @@ const Board = `
     addCardMember ( userId: Int!, boardId: Int!, cardId: Int! ): Card
     removeCardMember ( userId: Int!, boardId: Int!, cardId: Int! ): Card
   }
+
+  type Subscription {
+  	boardCreated(id: ID!): Board
+  }
 `;
 
 module.exports = Board;
