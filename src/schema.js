@@ -1,6 +1,6 @@
-const { makeExecutableSchema, mergeSchemas } = require("graphql-tools");
-const resolvers = require("./resolvers");
-const typeDefs = require("./typedefs");
+import { makeExecutableSchema } from "graphql-tools";
+import resolvers from "./resolvers";
+import typeDefs from "./typedefs";
 
 //let schemas = [];
 //for (t of typedefs) { schemas.push(makeExecutableSchema({ typeDefs: t })); }
@@ -10,4 +10,5 @@ const typeDefs = require("./typedefs");
 const schema = makeExecutableSchema({ typeDefs: [...typeDefs], resolvers });
 //console.log(schema);
 
-module.exports = { schema };
+//module.exports = { schema };
+export { schema };
