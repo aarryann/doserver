@@ -1,8 +1,10 @@
-const { BoardSubscription } = require('./board');
+const { BoardSubscription } = require("./board");
 
 const Subscription = {
   Subscription: {
-    ...BoardSubscription
+    boardCreated: {
+      subscribe: () => pubsub.asyncIterator("boardCreated")
+    }
   }
 };
 

@@ -1,7 +1,4 @@
-const Account = require('./account');
-const Board = require('./board');
+const Account = require("./account");
+const Board = require("./board");
 
-module.exports = [
-  Account,
-  Board,
-]
+module.exports = [Account, Board];

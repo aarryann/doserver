@@ -1,12 +1,13 @@
-const _ = require('lodash');
+const { PubSub } = require("apollo-server");
+const _ = require("lodash");
+
 // const { withFilter } = require('apollo-server');
 // const Board = require('../../models/board.js');
-const BOARD_ADDED = 'BOARD_ADDED';
+const pubsub = new PubSub();
 
 const BoardSubscription = {
   boardCreated: {
-    subscribe: (parent, args, ctx, info) =>
-      ctx.conn.pubsub.asyncIterator([BOARD_ADDED])
+    subscribe: () => pubsub.asyncIterator("boardCreated")
   }
 };
 

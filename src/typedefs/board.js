@@ -1,10 +1,7 @@
+const Account = require("./account");
+
 const Board = `
-  type User {
-    id: Int!
-    firstName: String
-    lastName: String
-    email: String
-    password: String
+  extend type User {
     ownedBoards: [Board] 
     memberBoards: [Board] 
     otherBoards: [Board] 
@@ -46,13 +43,13 @@ const Board = `
   }
 
   # the schema allows the following query:
-  type Query {
+  extend type Query {
     ownedBoards ( userId: Int! ): [Board]
     otherBoards ( userId: Int! ): [Board]
   }
 
   # this schema allows the following mutation:
-  type Mutation {
+  extend type Mutation {
     createBoard ( name: String!, owner: Int ): Board
     createList ( name: String!, boardId: Int! ): List
     createCard ( name: String!, description: String, tags: String, 
@@ -64,7 +61,7 @@ const Board = `
   }
 
   type Subscription {
-  	boardCreated(id: ID!): Board
+  	boardCreated: Board
   }
 `;
 

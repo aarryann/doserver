@@ -1,5 +1,8 @@
-const _ = require('lodash');
-const Board = require('../../models/board.js');
+const { PubSub } = require("apollo-server");
+const _ = require("lodash");
+const Board = require("../../models/board.js");
+
+const pubsub = new PubSub();
 
 const BoardMutation = {
   createBoard: async (parent, { name, owner }, ctx, info) => {
@@ -11,7 +14,9 @@ const BoardMutation = {
       owner,
       updatedUserId: ctx.userId
     });
-    ctx.conn.pubsub.publish('boardCreated', { boardCreated: board }); // trigger a change to all subscriptions to a new board
+    console.log(pubsub);
+    pubsub.publish("boardCreated", { boardCreated: board }); // trigger a change to all subscriptions to a new board
+    console.log(pubsub);
     return board;
   },
   createList: async (parent, { name, boardId }, ctx, info) => {
