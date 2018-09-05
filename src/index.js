@@ -1,11 +1,11 @@
 //{"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIxIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.oM7HJV9tjc0TSdiVdS6jje0QgejmKa-uoPSdm1JVNJ4"}
-const express = require('express');
-const { createServer } = require('http');
-const { ApolloServer } = require('apollo-server');
-const { schema } = require('./schema');
-const config = require('./config.js');
-const utils = require('./helpers/utils.js');
-const { PubSub } = require('apollo-server');
+import express from "express";
+import { createServer } from "http";
+import { ApolloServer } from "apollo-server-express";
+import { schema } from "./schema";
+import config from "./config.js";
+import utils from "./helpers/utils.js";
+import { PubSub } from "apollo-server";
 
 const app = express();
 const pubsub = new PubSub();
@@ -19,12 +19,7 @@ const server = new ApolloServer({
     const queryBody = req.body.query;
     let userId = 0;
     let token;
-    if (
-      queryBody.indexOf('login') === -1 &&
-      queryBody.indexOf('signup') === -1
-    ) {
-      ({ userId, token } = utils.getUserId(null, req));
-    }
+    //if ( queryBody.indexOf("login") === -1 && queryBody.indexOf("signup") === -1) { ({ userId, token } = utils.getUserId(null, req)); }
     return {
       userId,
       token,
@@ -36,7 +31,6 @@ const server = new ApolloServer({
   }
 });
 
-/*
 //server.applyMiddleware({ app, path: '/graphql' });
 server.applyMiddleware({ app });
 const httpServer = createServer(app);
@@ -52,9 +46,9 @@ httpServer.listen({ port: PORT }, () => {
     }`
   );
 });
-*/
-
+/*
 server.listen().then(({ url, subscriptionsUrl }) => {
   console.log(`🚀 Server ready at ${url}`);
   console.log(`🚀 Subscriptions ready at ${subscriptionsUrl}`);
 });
+*/

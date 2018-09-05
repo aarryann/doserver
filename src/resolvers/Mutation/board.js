@@ -1,6 +1,7 @@
-const { PubSub } = require("apollo-server");
-const _ = require("lodash");
-const Board = require("../../models/board.js");
+//import { PubSub } from "apollo-server";
+import { PubSub } from "graphql-subscriptions";
+import _ from "lodash";
+import Board from "../../models/board.js";
 
 const pubsub = new PubSub();
 
@@ -15,7 +16,7 @@ const BoardMutation = {
       updatedUserId: ctx.userId
     });
     console.log(pubsub);
-    pubsub.publish("boardCreated", { boardCreated: board }); // trigger a change to all subscriptions to a new board
+    pubsub.publish("boardCreated", { boardCreated: { boardName: "test" } }); // trigger a change to all subscriptions to a new board
     console.log(pubsub);
     return board;
   },
@@ -65,4 +66,4 @@ const BoardMutation = {
   }
 };
 
-module.exports = { BoardMutation };
+export { BoardMutation };

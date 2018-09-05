@@ -1,8 +1,9 @@
-const { PubSub } = require("apollo-server");
-const _ = require("lodash");
+//import { PubSub } from "apollo-server";
+import { PubSub } from "graphql-subscriptions";
+//import _ from "lodash";
 
-// const { withFilter } = require('apollo-server');
-// const Board = require('../../models/board.js');
+// import { withFilter } from 'apollo-server';
+// import Board from '../../models/board.js';
 const pubsub = new PubSub();
 
 const BoardSubscription = {
@@ -11,4 +12,5 @@ const BoardSubscription = {
   }
 };
 
-module.exports = { BoardSubscription };
+//module.exports = { BoardSubscription };
+export { BoardSubscription };

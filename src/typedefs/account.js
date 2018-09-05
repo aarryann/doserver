@@ -34,4 +34,6 @@ const Account = `
   }
 `;
 
-module.exports = Account;
+//module.exports = Account;
+
+export default Account;

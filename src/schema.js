@@ -1,13 +1,18 @@
-import { makeExecutableSchema } from "graphql-tools";
+import { makeExecutableSchema, mergeSchemas } from "graphql-tools";
 import resolvers from "./resolvers";
-import typeDefs from "./typedefs";
+import * as typeDefs from "./typedefs";
+//import { Account, Board } from "./typedefs";
 
-//let schemas = [];
-//for (t of typedefs) { schemas.push(makeExecutableSchema({ typeDefs: t })); }
+//console.log(typeDefs);
+let schemas = [];
+for (let t of Object.values(typeDefs)) {
+  schemas.push(makeExecutableSchema({ typeDefs: t }));
+}
 
-//const schema = mergeSchemas({ schemas: schemas, resolvers: [...resolvers] });
+const schema = mergeSchemas({ schemas: schemas, resolvers: [...resolvers] });
 
-const schema = makeExecutableSchema({ typeDefs: [...typeDefs], resolvers });
+//const schema = makeExecutableSchema({ typeDefs: [...typeDefs], resolvers });
+//const schema = makeExecutableSchema({ typeDefs: Account, resolvers });
 //console.log(schema);
 
 //module.exports = { schema };

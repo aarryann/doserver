@@ -1,4 +1,5 @@
-const Account = require("./account");
-const Board = require("./board");
+import Account from "./account";
+import Board from "./board";
 
-module.exports = [Account, Board];
+//module.exports = [Account, Board];
+export { Account, Board };

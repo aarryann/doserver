@@ -1,64 +1,64 @@
-const bcrypt = require('bcryptjs')
-const jwt = require('jsonwebtoken')
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 
-const getUserDetails = async(knex, id) => {
-  const rows = await knex('users').select('*')
-    .where('id', id);
+const getUserDetails = async (knex, id) => {
+  const rows = await knex("users")
+    .select("*")
+    .where("id", id);
 
   return rows[0];
-} 
+};
 
-const login = async(knex, email, password) => {
+const login = async (knex, email, password) => {
   try {
-    const rows = await knex.select('*')
-      .from('users').where('email', email);
+    const rows = await knex
+      .select("*")
+      .from("users")
+      .where("email", email);
 
     const user = rows[0];
-    const valid = await bcrypt.compare(password, user.password)
-    if (!valid){
-      throw new Error('Invalid email or password');
+    const valid = await bcrypt.compare(password, user.password);
+    if (!valid) {
+      throw new Error("Invalid email or password");
     }
 
     return {
       userId: user.id,
       token: jwt.sign({ userId: user.id }, process.env.APP_SECRET)
-    }
-  } catch(e){
-      throw new Error('Invalid email or password');
+    };
+  } catch (e) {
+    throw new Error("Invalid email or password");
   }
-}
+};
 
-const currentUser = async(knex, userId, token) => {
+const currentUser = async (knex, userId, token) => {
   try {
-    const rows = await knex.select('*')
-      .from('users').where('id', userId);
+    const rows = await knex
+      .select("*")
+      .from("users")
+      .where("id", userId);
 
     const user = rows[0];
 
     return {
       userId,
       token: token
-    }
-  } catch(e){
-      throw new Error('Invalid user');
+    };
+  } catch (e) {
+    throw new Error("Invalid user");
   }
-}
+};
 
-const signup = async(knex, args, ctx, info) => {
-  const password = await bcrypt.hash(args.password, 10)
+const signup = async (knex, args, ctx, info) => {
+  const password = await bcrypt.hash(args.password, 10);
   const user = await ctx.db.mutation.createUser({
-    data: { ...args, password },
-  })
+    data: { ...args, password }
+  });
 
   return {
     userId: user.id,
     token: jwt.sign({ userId: user.id }, process.env.APP_SECRET)
-  }
-}
+  };
+};
 
-module.exports = {
-  getUserDetails,
-  login,
-  currentUser,
-  signup
-}
+export { getUserDetails, login, currentUser, signup };

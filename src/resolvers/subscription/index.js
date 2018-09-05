@@ -1,5 +1,9 @@
-const { BoardSubscription } = require("./board");
+import { BoardSubscription } from "./board";
 
+/*
+import { PubSub } from "graphql-subscriptions";
+
+const pubsub = new PubSub();
 const Subscription = {
   Subscription: {
     boardCreated: {
@@ -7,5 +11,11 @@ const Subscription = {
     }
   }
 };
+*/
+const Subscription = {
+  Subscription: {
+    ...BoardSubscription
+  }
+};
 
-module.exports = { Subscription };
+export { Subscription };

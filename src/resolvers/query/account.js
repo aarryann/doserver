@@ -1,4 +1,4 @@
-const Account = require('../../models/account.js');
+import Account from "../../models/account.js";
 
 const AccountQuery = {
   user: async (_, { id }, ctx) => {
@@ -6,8 +6,8 @@ const AccountQuery = {
   },
 
   currentUser: async (_p, _a, ctx) => {
-    return Account.currentUser(ctx.conn.knex, ctx.userId, ctx.token );
+    return Account.currentUser(ctx.conn.knex, ctx.userId, ctx.token);
   }
-}
+};
 
-module.exports = { AccountQuery }
+export { AccountQuery };

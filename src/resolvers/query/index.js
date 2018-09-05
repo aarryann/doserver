@@ -1,11 +1,11 @@
-const { AccountQuery } = require('./account')
-const { BoardQuery } = require('./board')
+import { AccountQuery } from "./account";
+import { BoardQuery } from "./board";
 
 const Query = {
   Query: {
     ...AccountQuery,
-    ...BoardQuery,
+    ...BoardQuery
   }
-}
+};
 
-module.exports = { Query }
+export { Query };

@@ -1,24 +1,24 @@
-const jwt = require('jsonwebtoken')
+import jwt from "jsonwebtoken";
 
 function getUserFromToken(auth) {
   console.log(auth);
   console.log(process.env.APP_SECRET);
   if (!auth || auth.length === 0) {
-    console.log('NULL check');
+    console.log("NULL check");
     return null;
   }
-  const token = auth.replace('Bearer ', '');
+  const token = auth.replace("Bearer ", "");
   const { userId } = jwt.verify(token, process.env.APP_SECRET);
   return userId;
 }
 
 function getUserId(ctx, req) {
-  if(!req && ctx){
+  if (!req && ctx) {
     req = ctx.request;
   }
-  const Authorization = req.get('Authorization');
+  const Authorization = req.get("Authorization");
   if (Authorization) {
-    const token = Authorization.replace('Bearer ', '');
+    const token = Authorization.replace("Bearer ", "");
     const { userId } = jwt.verify(token, process.env.APP_SECRET);
     //console.log(userId);
     return { userId, token };
@@ -29,12 +29,8 @@ function getUserId(ctx, req) {
 
 class AuthError extends Error {
   constructor() {
-    super('Not authorized');
+    super("Not authorized");
   }
 }
 
-module.exports = {
-  getUserFromToken,
-  getUserId,
-  AuthError
-}
+export { getUserFromToken, getUserId, AuthError };

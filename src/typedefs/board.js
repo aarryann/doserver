@@ -1,7 +1,7 @@
-const Account = require("./account");
+import Account from "./account";
 
 const Board = `
-  extend type User {
+  type User {
     ownedBoards: [Board] 
     memberBoards: [Board] 
     otherBoards: [Board] 
@@ -43,13 +43,13 @@ const Board = `
   }
 
   # the schema allows the following query:
-  extend type Query {
+  type Query {
     ownedBoards ( userId: Int! ): [Board]
     otherBoards ( userId: Int! ): [Board]
   }
 
   # this schema allows the following mutation:
-  extend type Mutation {
+  type Mutation {
     createBoard ( name: String!, owner: Int ): Board
     createList ( name: String!, boardId: Int! ): List
     createCard ( name: String!, description: String, tags: String, 
@@ -65,4 +65,6 @@ const Board = `
   }
 `;
 
-module.exports = Board;
+//module.exports = Board;
+
+export default Board;
