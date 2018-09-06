@@ -1,8 +1,5 @@
-//import { PubSub } from "apollo-server";
-import { PubSub } from 'graphql-subscriptions';
+import pubsub from '../../helpers/pubsub';
 import Board from '../../models/board.js';
-
-const pubsub = new PubSub();
 
 const BoardMutation = {
   //eslint-disable-next-line

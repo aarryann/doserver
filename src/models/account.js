@@ -62,4 +62,4 @@ const signup = async (knex, args, ctx) => {
   };
 };
 
-export { getUserDetails, login, currentUser, signup };
+export default { getUserDetails, login, currentUser, signup };
