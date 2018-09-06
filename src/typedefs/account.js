@@ -1,4 +1,11 @@
-const Account = `
+import { gql } from 'apollo-server-express';
+
+export default `
+  extend type Query {
+    user(id: Int!): User
+    currentUser: UserAuth
+  }
+
   type AppVersions {
     id: Int!
     appVersion: String
@@ -22,18 +29,7 @@ const Account = `
     user: User
   }
 
-  # the schema allows the following query:
-  type Query {
-    user(id: Int!): User
-    currentUser: UserAuth
-  }
-
-  # this schema allows the following mutation:
-  type Mutation {
-    login ( email: String!, password: String! ): UserAuth
+  extend type Mutation {
+    login(email: String!, password: String!): UserAuth
   }
 `;
-
-//module.exports = Account;
-
-export default Account;

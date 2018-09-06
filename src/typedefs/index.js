@@ -1,5 +1,5 @@
-import Account from "./account";
-import Board from "./board";
+import account from './account';
+import board from './board';
+import link from './link';
 
-//module.exports = [Account, Board];
-export { Account, Board };
+export default [link, account, board];

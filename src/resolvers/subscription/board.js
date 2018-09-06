@@ -1,5 +1,5 @@
 //import { PubSub } from "apollo-server";
-import { PubSub } from "graphql-subscriptions";
+import { PubSub } from 'graphql-subscriptions';
 //import _ from "lodash";
 
 // import { withFilter } from 'apollo-server';
@@ -8,7 +8,7 @@ const pubsub = new PubSub();
 
 const BoardSubscription = {
   boardCreated: {
-    subscribe: () => pubsub.asyncIterator("boardCreated")
+    subscribe: () => pubsub.asyncIterator('boardCreated')
   }
 };
 

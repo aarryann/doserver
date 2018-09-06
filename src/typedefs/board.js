@@ -1,10 +1,10 @@
-import Account from "./account";
+import { gql } from 'apollo-server-express';
 
-const Board = `
-  type User {
-    ownedBoards: [Board] 
-    memberBoards: [Board] 
-    otherBoards: [Board] 
+export default `
+  extend type User {
+    ownedBoards: [Board]
+    memberBoards: [Board]
+    otherBoards: [Board]
   }
 
   type Board {
@@ -43,28 +43,28 @@ const Board = `
   }
 
   # the schema allows the following query:
-  type Query {
-    ownedBoards ( userId: Int! ): [Board]
-    otherBoards ( userId: Int! ): [Board]
+  extend type Query {
+    ownedBoards(userId: Int!): [Board]
+    otherBoards(userId: Int!): [Board]
   }
 
   # this schema allows the following mutation:
-  type Mutation {
-    createBoard ( name: String!, owner: Int ): Board
-    createList ( name: String!, boardId: Int! ): List
-    createCard ( name: String!, description: String, tags: String, 
-      listId:Int! ): Card
-    addCardComment ( text: String!, userId: Int!, cardId: Int! ): Card
-    addBoardMember ( email: String!, boardId: Int! ): Board
-    addCardMember ( userId: Int!, boardId: Int!, cardId: Int! ): Card
-    removeCardMember ( userId: Int!, boardId: Int!, cardId: Int! ): Card
+  extend type Mutation {
+    createBoard(name: String!, owner: Int): Board
+    createList(name: String!, boardId: Int!): List
+    createCard(
+      name: String!
+      description: String
+      tags: String
+      listId: Int!
+    ): Card
+    addCardComment(text: String!, userId: Int!, cardId: Int!): Card
+    addBoardMember(email: String!, boardId: Int!): Board
+    addCardMember(userId: Int!, boardId: Int!, cardId: Int!): Card
+    removeCardMember(userId: Int!, boardId: Int!, cardId: Int!): Card
   }
 
-  type Subscription {
-  	boardCreated: Board
+  extend type Subscription {
+    boardCreated: Board
   }
 `;
-
-//module.exports = Board;
-
-export default Board;
