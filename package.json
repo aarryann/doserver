@@ -7,24 +7,24 @@
     "dev": "npm-run-all --parallel start"
   },
   "dependencies": {
-    "apollo-server": "^2.0.0-rc.12",
-    "apollo-server-express": "^2.0.0-rc.12",
+    "apollo-server": "^2.0.7",
+    "apollo-server-express": "^2.0.6",
     "bcryptjs": "2.4.3",
     "body-parser": "^1.17.1",
     "cors": "^2.8.3",
     "express": "^4.16.3",
-    "graphql": "^0.10.1",
+    "graphql": "^0.11.7",
     "graphql-resolvers": "^0.2.2",
     "graphql-server-core": "^0.8.2",
     "graphql-server-express": "^0.8.2",
     "graphql-server-module-graphiql": "^0.8.2",
-    "graphql-subscriptions": "^0.4.3",
+    "graphql-subscriptions": "^0.5.8",
     "http": "^0.0.0",
     "jsonwebtoken": "8.3.0",
     "knex": "^0.15.2",
     "lodash": "^4.17.10",
-    "mysql2": "^1.5.3",
-    "subscriptions-transport-ws": "^0.7.3"
+    "mysql2": "^1.6.1",
+    "subscriptions-transport-ws": "^0.9.14"
   },
   "devDependencies": {
     "babel-cli": "^6.24.0",
@@ -33,7 +33,7 @@
     "babel-preset-stage-0": "^6.22.0",
     "babel-register": "^6.26.0",
     "dotenv": "^6.0.0",
-    "graphql-cli": "2.16.5",
+    "graphql-cli": "^2.16.7",
     "npm-run-all": "4.1.3"
   },
   "description": "<h1 align=\"center\"><strong>Boilerplate for an Advanced GraphQL Server</strong></h1>",
