@@ -4,10 +4,8 @@ import { createServer } from 'http';
 import { ApolloServer } from 'apollo-server-express';
 import { schema } from './schema';
 import config from './config.js';
-import { PubSub } from 'apollo-server';
 
 const app = express();
-const pubsub = new PubSub();
 const PORT = 4000;
 
 // Start the server
@@ -24,15 +22,13 @@ const server = new ApolloServer({
       userId,
       token,
       conn: {
-        knex: config.knex,
-        pubsub: pubsub
+        knex: config.knex
       }
     };
   }
 });
 
 server.applyMiddleware({ app, path: '/graphql' });
-//server.applyMiddleware({ app });
 const httpServer = createServer(app);
 server.installSubscriptionHandlers(httpServer);
 
