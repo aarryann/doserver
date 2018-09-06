@@ -1,21 +1,21 @@
-import express from "express";
-import { graphqlExpress, graphiqlExpress } from "graphql-server-express";
-import bodyParser from "body-parser";
-import cors from "cors";
+import express from 'express';
+import { graphqlExpress, graphiqlExpress } from 'graphql-server-express';
+import bodyParser from 'body-parser';
+import cors from 'cors';
 
-import { schema } from "./schema";
+import { schema } from './schema';
 
-import { execute, subscribe } from "graphql";
-import { createServer } from "http";
-import { SubscriptionServer } from "subscriptions-transport-ws";
+import { execute, subscribe } from 'graphql';
+import { createServer } from 'http';
+import { SubscriptionServer } from 'subscriptions-transport-ws';
 
 const PORT = 4000;
 const server = express();
 
-server.use("*", cors({ origin: "http://localhost:3000" }));
+server.use('*', cors({ origin: 'http://localhost:3000' }));
 
 server.use(
-  "/graphql",
+  '/graphql',
   bodyParser.json(),
   graphqlExpress({
     schema
@@ -23,9 +23,9 @@ server.use(
 );
 
 server.use(
-  "/graphiql",
+  '/graphiql',
   graphiqlExpress({
-    endpointURL: "/graphql",
+    endpointURL: '/graphql',
     subscriptionsEndpoint: `ws://localhost:4000/subscriptions`
   })
 );
@@ -45,7 +45,7 @@ ws.listen(PORT, () => {
     },
     {
       server: ws,
-      path: "/subscriptions"
+      path: '/subscriptions'
     }
   );
 });

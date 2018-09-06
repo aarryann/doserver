@@ -1,7 +1,8 @@
+// prettier-ignore
 //knex migrate:make filename; knex migrate:latest; knex migrate:rollback
 
-exports.up = (knex, Promise) => {
-    return knex.schema
+exports.up = (knex) => {
+  return knex.schema
     .createTable('app_versions', (table) => {
       table.increments('id').unsigned().primary();
       table.string('appVersion').notNullable();
@@ -21,8 +22,8 @@ exports.up = (knex, Promise) => {
     });
 };
 
-exports.down = (knex, Promise) => {
-    return knex.schema
+exports.down = knex => {
+  return knex.schema
     .dropTableIfExists('app_versions')
     .dropTableIfExists('users');
 };

@@ -1,12 +1,12 @@
 //import { PubSub } from "apollo-server";
 import { PubSub } from 'graphql-subscriptions';
-import _ from 'lodash';
 import Board from '../../models/board.js';
 
 const pubsub = new PubSub();
 
 const BoardMutation = {
-  createBoard: async (parent, { name, owner }, ctx, info) => {
+  //eslint-disable-next-line
+  createBoard: async (_parent, { name, owner }, ctx, _info) => {
     if (!owner) {
       owner = ctx.userId;
     }
@@ -15,24 +15,17 @@ const BoardMutation = {
       owner,
       updatedUserId: ctx.userId
     });
-    console.log(pubsub);
-    pubsub.publish('boardCreated', { boardCreated: { boardName: 'test' } }); // trigger a change to all subscriptions to a new board
-    console.log(pubsub);
+    pubsub.publish('boardCreated', { boardCreated: board }); // trigger a change to all subscriptions to a new board
     return board;
   },
-  createList: async (parent, { name, boardId }, ctx, info) => {
+  createList: async (_parent, { name, boardId }, ctx) => {
     return Board.createList(ctx.conn.knex, {
       name,
       boardId,
       updatedUserId: ctx.userId
     });
   },
-  createCard: async (
-    parent,
-    { name, description, tags, listId },
-    ctx,
-    info
-  ) => {
+  createCard: async (_parent, { name, description, tags, listId }, ctx) => {
     return Board.createCard(ctx.conn.knex, {
       name,
       description,
@@ -41,7 +34,7 @@ const BoardMutation = {
       updatedUserId: ctx.userId
     });
   },
-  addCardComment: async (parent, { text, userId, cardId }, ctx, info) => {
+  addCardComment: async (_parent, { text, userId, cardId }, ctx) => {
     return Board.addCardComment(ctx.conn.knex, {
       text,
       userId,
@@ -49,19 +42,19 @@ const BoardMutation = {
       updatedUserId: ctx.userId
     });
   },
-  addBoardMember: async (parent, { email, boardId }, ctx, info) => {
+  addBoardMember: async (_parent, { email, boardId }, ctx) => {
     return Board.addBoardMember(ctx.conn.knex, email, {
       boardId,
       updatedUserId: ctx.userId
     });
   },
-  addCardMember: async (parent, { userId, boardId, cardId }, ctx, info) => {
+  addCardMember: async (_parent, { userId, boardId, cardId }, ctx) => {
     return Board.addCardMember(ctx.conn.knex, userId, boardId, {
       cardId,
       updatedUserId: ctx.userId
     });
   },
-  removeCardMember: async (parent, { userId, boardId, cardId }, ctx, info) => {
+  removeCardMember: async (_parent, { userId, boardId, cardId }, ctx) => {
     return Board.removeCardMember(ctx.conn.knex, userId, boardId, cardId);
   }
 };

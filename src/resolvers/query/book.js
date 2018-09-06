@@ -1,5 +1,5 @@
 const BookQuery = {
-/*
+  /*
   feed(parent, args, ctx, info) {
     return ctx.db.query.posts({ where: { isPublished: true } }, info)
   },
@@ -26,6 +26,6 @@ const BookQuery = {
     return ctx.db.query.user({ where: { id } }, info)
   },
 */
-}
+};
 
-module.exports = { BookQuery }
+module.exports = { BookQuery };

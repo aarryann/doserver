@@ -1,4 +1,4 @@
-import Account from "../../models/account.js";
+import Account from '../../models/account.js';
 
 const AccountQuery = {
   user: async (_, { id }, ctx) => {

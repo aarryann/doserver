@@ -1,11 +1,10 @@
 //{"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIxIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.oM7HJV9tjc0TSdiVdS6jje0QgejmKa-uoPSdm1JVNJ4"}
-import express from "express";
-import { createServer } from "http";
-import { ApolloServer } from "apollo-server-express";
-import { schema } from "./schema";
-import config from "./config.js";
-import utils from "./helpers/utils.js";
-import { PubSub } from "apollo-server";
+import express from 'express';
+import { createServer } from 'http';
+import { ApolloServer } from 'apollo-server-express';
+import { schema } from './schema';
+import config from './config.js';
+import { PubSub } from 'apollo-server';
 
 const app = express();
 const pubsub = new PubSub();
@@ -16,6 +15,7 @@ const server = new ApolloServer({
   cors: true,
   schema,
   context: ({ req }) => {
+    //eslint-disable-next-line
     const queryBody = req.body.query;
     let userId = 0;
     let token;
@@ -37,9 +37,11 @@ const httpServer = createServer(app);
 server.installSubscriptionHandlers(httpServer);
 
 httpServer.listen({ port: PORT }, () => {
+  //eslint-disable-next-line
   console.log(
     `🚀 Server ready at http://localhost:${PORT}${server.graphqlPath}`
   );
+  //eslint-disable-next-line
   console.log(
     `🚀 Subscriptions ready at ws://localhost:${PORT}${
       server.subscriptionsPath

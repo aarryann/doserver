@@ -1,7 +1,7 @@
-import { getUserId } from "../../helpers/utils";
+import { getUserId } from '../../helpers/utils';
 
 const post = {
-  async createDraft(parent, { title, text }, ctx, info) {
+  async createDraft(_parent, { title, text }, ctx, info) {
     const userId = getUserId(ctx);
     return ctx.db.mutation.createPost(
       {
@@ -18,13 +18,14 @@ const post = {
     );
   },
 
-  async publish(parent, { id }, ctx, info) {
+  async publish(_parent, { id }, ctx, info) {
     const userId = getUserId(ctx);
     const postExists = await ctx.db.exists.Post({
       id,
       author: { id: userId }
     });
     if (!postExists) {
+      // eslint-disable-next-line
       throw new Error(`Post not found or you're not the author`);
     }
 
@@ -37,13 +38,14 @@ const post = {
     );
   },
 
-  async deletePost(parent, { id }, ctx, info) {
+  async deletePost(_parent, { id }, ctx) {
     const userId = getUserId(ctx);
     const postExists = await ctx.db.exists.Post({
       id,
       author: { id: userId }
     });
     if (!postExists) {
+      // eslint-disable-next-line
       throw new Error(`Post not found or you're not the author`);
     }
 

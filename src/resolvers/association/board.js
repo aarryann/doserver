@@ -1,5 +1,5 @@
-import Account from "../../models/account.js";
-import Board from "../../models/board.js";
+import Account from '../../models/account.js';
+import Board from '../../models/board.js';
 
 const BoardAssociation = {
   Board: {

@@ -1,4 +1,4 @@
-import Board from "../../models/board.js";
+import Board from '../../models/board.js';
 
 const BoardQuery = {
   ownedBoards: async (_, { userId }, ctx) => {

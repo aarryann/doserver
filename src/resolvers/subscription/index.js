@@ -1,4 +1,4 @@
-import { BoardSubscription } from "./board";
+import { BoardSubscription } from './board';
 
 /*
 import { PubSub } from "graphql-subscriptions";

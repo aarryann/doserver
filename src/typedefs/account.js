@@ -1,5 +1,3 @@
-import { gql } from 'apollo-server-express';
-
 export default `
   extend type Query {
     user(id: Int!): User

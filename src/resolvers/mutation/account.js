@@ -1,4 +1,4 @@
-import Account from "../../models/account.js";
+import Account from '../../models/account.js';
 
 const AccountMutation = {
   login: async (_, { email, password }, ctx) => {
