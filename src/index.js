@@ -1,20 +1,22 @@
 //{"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIxIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.oM7HJV9tjc0TSdiVdS6jje0QgejmKa-uoPSdm1JVNJ4"}
-//import express from 'express';
-//import { createServer } from 'http';
-//import { ApolloServer } from 'apollo-server-express';
-import { ApolloServer } from 'apollo-server';
+import express from 'express';
+import { createServer } from 'http';
+import { ApolloServer } from 'apollo-server-express';
 import resolvers from './resolvers';
 import typeDefs from './typedefs';
 import { getMe, knex, pubsub } from './helpers/utils';
-//import cors from 'cors';
+import cors from 'cors';
 
-//const app = express();
-//app.use('*', cors({ origin: 'http://localhost:3000' }));
-//const PORT = 5000;
+const corsOptions = {
+  origin: 'http://localhost:3000',
+  optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+};
+const app = express();
+app.use('*', cors(corsOptions));
+const PORT = 7000;
 
 // Start the server
 const server = new ApolloServer({
-  cors: true,
   typeDefs,
   resolvers,
   formatError: error => ({
@@ -48,7 +50,6 @@ const server = new ApolloServer({
     };
   }
 });
-/*
 server.applyMiddleware({ app, path: '/graphql' });
 const httpServer = createServer(app);
 server.installSubscriptionHandlers(httpServer);
@@ -65,11 +66,11 @@ httpServer.listen({ port: PORT }, () => {
     }`
   );
 });
-*/
-
+/*
 server.listen().then(({ url, subscriptionsUrl }) => {
   //eslint-disable-next-line
   console.log(`🚀 Server ready at ${url}`);
   //eslint-disable-next-line
   console.log(`🚀 Subscriptions ready at ${subscriptionsUrl}`);
 });
+*/
