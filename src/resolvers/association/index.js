@@ -1,9 +1,7 @@
-import { AccountAssociation } from './account';
-import { BoardAssociation } from './board';
+import AccountAssociation from './account';
+import BoardAssociation from './board';
 
-const Association = {
+export default {
   ...AccountAssociation,
   ...BoardAssociation
 };
-
-export { Association };

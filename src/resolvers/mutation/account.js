@@ -1,9 +1,7 @@
 import Account from '../../models/account.js';
 
-const AccountMutation = {
+export default {
   login: async (_, { email, password }, ctx) => {
     return Account.login(ctx.conn.knex, email, password);
   }
 };
-
-export { AccountMutation };

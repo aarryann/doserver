@@ -1,4 +1,4 @@
-const BookQuery = {
+export default {
   /*
   feed(parent, args, ctx, info) {
     return ctx.db.query.posts({ where: { isPublished: true } }, info)
@@ -27,5 +27,3 @@ const BookQuery = {
   },
 */
 };
-
-module.exports = { BookQuery };

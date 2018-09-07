@@ -1,11 +1,9 @@
-import { AccountMutation } from './account';
-import { BoardMutation } from './board';
+import AccountMutation from './account';
+import BoardMutation from './board';
 
-const Mutation = {
+export default {
   Mutation: {
     ...AccountMutation,
     ...BoardMutation
   }
 };
-
-export { Mutation };

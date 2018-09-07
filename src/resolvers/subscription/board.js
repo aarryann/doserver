@@ -1,9 +1,7 @@
 import { pubsub } from '../../helpers/utils';
 
-const BoardSubscription = {
+export default {
   boardCreated: {
     subscribe: () => pubsub.asyncIterator('boardCreated')
   }
 };
-
-export { BoardSubscription };

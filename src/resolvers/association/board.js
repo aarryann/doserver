@@ -1,7 +1,7 @@
 import Account from '../../models/account.js';
 import Board from '../../models/board.js';
 
-const BoardAssociation = {
+export default {
   Board: {
     owner: async (board, _, ctx) => {
       return Account.getUserDetails(ctx.conn.knex, board.owner);
@@ -44,5 +44,3 @@ const BoardAssociation = {
     }
   }
 };
-
-export { BoardAssociation };

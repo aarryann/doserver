@@ -1,33 +1,54 @@
 //{"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIxIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.oM7HJV9tjc0TSdiVdS6jje0QgejmKa-uoPSdm1JVNJ4"}
-import express from 'express';
-import { createServer } from 'http';
-import { ApolloServer } from 'apollo-server-express';
-import { schema } from './schema';
-import config from './config.js';
+//import express from 'express';
+//import { createServer } from 'http';
+//import { ApolloServer } from 'apollo-server-express';
+import { ApolloServer } from 'apollo-server';
+import resolvers from './resolvers';
+import typeDefs from './typedefs';
+import { getMe, knex, pubsub } from './helpers/utils';
+//import cors from 'cors';
 
-const app = express();
-const PORT = 4000;
+//const app = express();
+//app.use('*', cors({ origin: 'http://localhost:3000' }));
+//const PORT = 5000;
 
 // Start the server
 const server = new ApolloServer({
   cors: true,
-  schema,
+  typeDefs,
+  resolvers,
+  formatError: error => ({
+    message: error.message,
+    locations: error.locations,
+    stack: error.stack ? error.stack.split('\n') : [],
+    path: error.path
+  }),
   context: ({ req }) => {
-    //eslint-disable-next-line
-    const queryBody = req.body.query;
+    let rbq = '';
+    if (req && req.body && req.body.query) {
+      rbq = req.body.query;
+    }
     let userId = 0;
     let token;
-    //if ( queryBody.indexOf("login") === -1 && queryBody.indexOf("signup") === -1) { ({ userId, token } = utils.getUserId(null, req)); }
+    if (
+      rbq.length > 1 &&
+      rbq.indexOf('login') === -1 &&
+      rbq.indexOf('signup') === -1 &&
+      rbq.indexOf('IntrospectionQuery') === -1
+    ) {
+      ({ userId, token } = getMe(req));
+    }
     return {
       userId,
       token,
       conn: {
-        knex: config.knex
+        knex,
+        pubsub
       }
     };
   }
 });
-
+/*
 server.applyMiddleware({ app, path: '/graphql' });
 const httpServer = createServer(app);
 server.installSubscriptionHandlers(httpServer);
@@ -44,9 +65,11 @@ httpServer.listen({ port: PORT }, () => {
     }`
   );
 });
-/*
+*/
+
 server.listen().then(({ url, subscriptionsUrl }) => {
+  //eslint-disable-next-line
   console.log(`🚀 Server ready at ${url}`);
+  //eslint-disable-next-line
   console.log(`🚀 Subscriptions ready at ${subscriptionsUrl}`);
 });
-*/

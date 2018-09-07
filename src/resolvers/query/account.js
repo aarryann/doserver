@@ -1,6 +1,6 @@
 import Account from '../../models/account.js';
 
-const AccountQuery = {
+export default {
   user: async (_, { id }, ctx) => {
     return Account.getUserDetails(ctx.conn.knex, id);
   },
@@ -9,5 +9,3 @@ const AccountQuery = {
     return Account.currentUser(ctx.conn.knex, ctx.userId, ctx.token);
   }
 };
-
-export { AccountQuery };

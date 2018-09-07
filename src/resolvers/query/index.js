@@ -1,11 +1,9 @@
-import { AccountQuery } from './account';
-import { BoardQuery } from './board';
+import AccountQuery from './account';
+import BoardQuery from './board';
 
-const Query = {
+export default {
   Query: {
     ...AccountQuery,
     ...BoardQuery
   }
 };
-
-export { Query };

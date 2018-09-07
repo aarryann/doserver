@@ -265,7 +265,7 @@ const removeCardMember = async (knex, userId, boardId, cardId) => {
     });
 };
 
-module.exports = {
+export default {
   getBoardDetails,
   getBoardMembers,
   getCardMembers,

@@ -1,7 +1,7 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
-const auth = {
+export default {
   async signup(parent, args, ctx) {
     const password = await bcrypt.hash(args.password, 10);
     const user = await ctx.db.mutation.createUser({
@@ -31,5 +31,3 @@ const auth = {
     };
   }
 };
-
-export { auth };

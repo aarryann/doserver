@@ -1,6 +1,6 @@
 import Board from '../../models/board.js';
 
-const BoardMutation = {
+export default {
   //eslint-disable-next-line
   createBoard: async (_parent, { name, owner }, ctx, _info) => {
     if (!owner) {
@@ -54,5 +54,3 @@ const BoardMutation = {
     return Board.removeCardMember(ctx.conn.knex, userId, boardId, cardId);
   }
 };
-
-export { BoardMutation };

@@ -1,6 +1,6 @@
 import { getUserId } from '../../helpers/utils';
 
-const post = {
+export default {
   async createDraft(_parent, { title, text }, ctx, info) {
     const userId = getUserId(ctx);
     return ctx.db.mutation.createPost(
@@ -52,5 +52,3 @@ const post = {
     return ctx.db.mutation.deletePost({ where: { id } });
   }
 };
-
-export { post };
