@@ -4,6 +4,7 @@ import bodyParser from 'body-parser';
 import cors from 'cors';
 
 import { schema } from './schema';
+import { getMe, knex, pubsub } from './helpers/utils';
 
 import { execute, subscribe } from 'graphql';
 import { createServer } from 'http';
@@ -17,8 +18,34 @@ server.use('*', cors({ origin: 'http://localhost:3000' }));
 server.use(
   '/graphql',
   bodyParser.json(),
-  graphqlExpress({
-    schema
+  graphqlExpress(req => {
+    const rbq = req.body.query;
+    let userId = 0;
+    let token;
+    if (
+      rbq.indexOf('login') === -1 &&
+      rbq.indexOf('signup') === -1 &&
+      rbq.indexOf('IntrospectionQuery') === -1
+    ) {
+      ({ userId, token } = getMe(req));
+    }
+    return {
+      schema,
+      formatError: error => ({
+        message: error.message,
+        locations: error.locations,
+        stack: error.stack ? error.stack.split('\n') : [],
+        path: error.path
+      }),
+      context: {
+        userId,
+        token,
+        conn: {
+          knex,
+          pubsub
+        }
+      }
+    };
   })
 );
 

@@ -1,4 +1,4 @@
-import pubsub from '../../helpers/pubsub';
+import { pubsub } from '../../helpers/utils';
 
 const BoardSubscription = {
   boardCreated: {

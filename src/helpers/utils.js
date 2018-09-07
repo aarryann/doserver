@@ -1,39 +1,33 @@
+import { PubSub } from 'apollo-server';
+// import { PubSub } from 'graphql-subscriptions';
 import jwt from 'jsonwebtoken';
+import Knex from 'knex';
 
-function getUserFromToken(auth) {
-  // eslint-disable-next-line
-  console.log(auth);
-  // eslint-disable-next-line
-  console.log(process.env.APP_SECRET);
-  if (!auth || auth.length === 0) {
-    // eslint-disable-next-line
-    console.log('NULL check');
-    return null;
-  }
-  const token = auth.replace('Bearer ', '');
-  const { userId } = jwt.verify(token, process.env.APP_SECRET);
-  return userId;
-}
-
-function getUserId(ctx, req) {
-  if (!req && ctx) {
-    req = ctx.request;
-  }
-  const Authorization = req.get('Authorization');
-  if (Authorization) {
+export const getMe = async req => {
+  try {
+    const Authorization = req.get('Authorization');
     const token = Authorization.replace('Bearer ', '');
-    const { userId } = jwt.verify(token, process.env.APP_SECRET);
-    //console.log(userId);
+    const { userId } = await jwt.verify(token, process.env.APP_SECRET);
     return { userId, token };
+  } catch (e) {
+    throw new AuthError();
   }
+};
 
-  throw new AuthError();
-}
-
-class AuthError extends Error {
+export class AuthError extends Error {
   constructor() {
     super('Not authorized');
   }
 }
 
-export { getUserFromToken, getUserId, AuthError };
+export const pubsub = new PubSub();
+
+export const knex = Knex({
+  client: 'mysql2',
+  connection: {
+    host: 'localhost',
+    user: 'appuser',
+    password: 'appuserpw',
+    database: 'doapp'
+  }
+});

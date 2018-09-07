@@ -1,4 +1,3 @@
-import pubsub from '../../helpers/pubsub';
 import Board from '../../models/board.js';
 
 const BoardMutation = {
@@ -12,7 +11,7 @@ const BoardMutation = {
       owner,
       updatedUserId: ctx.userId
     });
-    pubsub.publish('boardCreated', { boardCreated: board }); // trigger a change to all subscriptions to a new board
+    ctx.pubsub.publish('boardCreated', { boardCreated: board }); // trigger a change to all subscriptions to a new board
     return board;
   },
   createList: async (_parent, { name, boardId }, ctx) => {
