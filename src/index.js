@@ -13,7 +13,7 @@ const corsOptions = {
 };
 const app = express();
 app.use('*', cors(corsOptions));
-const PORT = 7000;
+const PORT = 4000;
 
 // Start the server
 const server = new ApolloServer({

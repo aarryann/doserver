@@ -3,11 +3,11 @@ import { PubSub } from 'apollo-server';
 import jwt from 'jsonwebtoken';
 import Knex from 'knex';
 
-export const getMe = async req => {
+export const getMe = req => {
   try {
     const Authorization = req.get('Authorization');
     const token = Authorization.replace('Bearer ', '');
-    const { userId } = await jwt.verify(token, process.env.APP_SECRET);
+    const { userId } = jwt.verify(token, process.env.APP_SECRET);
     return { userId, token };
   } catch (e) {
     throw new AuthError();
