@@ -1,5 +1,5 @@
 // prettier-ignore
-import bcrypt from 'bcryptjs';
+const bcrypt =  require('bcryptjs');
 
 // eslint-disable-next-line
 exports.seed = async function(knex, Promise) {
