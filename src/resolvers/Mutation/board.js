@@ -1,7 +1,7 @@
 import Board from '../../models/board.js';
 
 export default {
-  //eslint-disable-next-line
+  // eslint-disable-next-line
   createBoard: async (_parent, { name, owner }, ctx, _info) => {
     if (!owner) {
       owner = ctx.userId;

@@ -71,8 +71,6 @@ const getListsForBoard = async (knex, boardId) => {
 };
 
 const getCardDetails = async (knex, cardId) => {
-  // eslint-disable-next-line
-  console.log(cardId);
   const rows = await knex('cards')
     .select('*')
     .where('id', cardId);

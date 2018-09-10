@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 //{"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIxIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.oM7HJV9tjc0TSdiVdS6jje0QgejmKa-uoPSdm1JVNJ4"}
 import express from 'express';
 import { createServer } from 'http';
@@ -55,11 +56,9 @@ const httpServer = createServer(app);
 server.installSubscriptionHandlers(httpServer);
 
 httpServer.listen({ port: PORT }, () => {
-  //eslint-disable-next-line
   console.log(
     `🚀 Server ready at http://localhost:${PORT}${server.graphqlPath}`
   );
-  //eslint-disable-next-line
   console.log(
     `🚀 Subscriptions ready at ws://localhost:${PORT}${
       server.subscriptionsPath
@@ -68,9 +67,7 @@ httpServer.listen({ port: PORT }, () => {
 });
 /*
 server.listen().then(({ url, subscriptionsUrl }) => {
-  //eslint-disable-next-line
   console.log(`🚀 Server ready at ${url}`);
-  //eslint-disable-next-line
   console.log(`🚀 Subscriptions ready at ${subscriptionsUrl}`);
 });
 */
