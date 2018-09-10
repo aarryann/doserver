@@ -6,7 +6,7 @@ export default `
   }
 
   type Board {
-    id: Int!
+    id: ID!
     name: String
     slug: String
     owner: User
@@ -15,7 +15,7 @@ export default `
   }
 
   type List {
-    id: Int!
+    id: ID!
     name: String
     position: Int
     board: Board
@@ -23,7 +23,7 @@ export default `
   }
 
   type Card {
-    id: Int!
+    id: ID!
     name: String
     description: String
     tags: String
@@ -34,7 +34,7 @@ export default `
   }
 
   type Comment {
-    id: Int!
+    id: ID!
     text: String
     user: User
     card: Card
@@ -42,24 +42,24 @@ export default `
 
   # the schema allows the following query:
   extend type Query {
-    ownedBoards(userId: Int!): [Board]
-    otherBoards(userId: Int!): [Board]
+    ownedBoards(userId: ID!): [Board]
+    otherBoards(userId: ID!): [Board]
   }
 
   # this schema allows the following mutation:
   extend type Mutation {
-    createBoard(name: String!, owner: Int): Board
-    createList(name: String!, boardId: Int!): List
+    createBoard(name: String!, owner: ID): Board
+    createList(name: String!, boardId: ID!): List
     createCard(
       name: String!
       description: String
       tags: String
-      listId: Int!
+      listId: ID!
     ): Card
-    addCardComment(text: String!, userId: Int!, cardId: Int!): Card
-    addBoardMember(email: String!, boardId: Int!): Board
-    addCardMember(userId: Int!, boardId: Int!, cardId: Int!): Card
-    removeCardMember(userId: Int!, boardId: Int!, cardId: Int!): Card
+    addCardComment(text: String!, userId: ID!, cardId: ID!): Card
+    addBoardMember(email: String!, boardId: ID!): Board
+    addCardMember(userId: ID!, boardId: ID!, cardId: ID!): Card
+    removeCardMember(userId: ID!, boardId: ID!, cardId: ID!): Card
   }
 
   extend type Subscription {

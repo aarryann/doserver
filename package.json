@@ -19,7 +19,8 @@
     "jsonwebtoken": "8.3.0",
     "knex": "^0.15.2",
     "lodash": "^4.17.10",
-    "mysql2": "^1.6.1"
+    "mysql2": "^1.6.1",
+    "pg": "^7.4.3"
   },
   "devDependencies": {
     "babel-cli": "^6.24.0",

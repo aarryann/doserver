@@ -101,7 +101,7 @@ const createBoard = async (knex, board) => {
   board.updatedAt = knex.fn.now();
   return knex
     .transaction(async trx => {
-      const insertedBoard = await trx('boards').insert(board);
+      const insertedBoard = await trx('boards').insert(board, 'id');
       board.id = insertedBoard[0];
 
       await trx('user_boards').insert({
@@ -136,7 +136,7 @@ const createList = async (knex, list) => {
       }
       list.position = position;
 
-      const insertedList = await trx('lists').insert(list);
+      const insertedList = await trx('lists').insert(list, 'id');
       list.id = insertedList[0];
 
       return list;
@@ -165,7 +165,7 @@ const createCard = async (knex, card) => {
       }
       card.position = position;
 
-      const insertedCard = await trx('cards').insert(card);
+      const insertedCard = await trx('cards').insert(card, 'id');
       card.id = insertedCard[0];
 
       return card;
@@ -180,7 +180,7 @@ const addCardComment = async (knex, comment) => {
   comment.updatedAt = knex.fn.now();
   return knex
     .transaction(async trx => {
-      const insertedComment = await trx('comments').insert(comment);
+      const insertedComment = await trx('comments').insert(comment, 'id');
       comment.id = insertedComment[0];
 
       const rows = await trx('cards')
@@ -202,7 +202,7 @@ const addBoardMember = async (knex, email, userBoard) => {
         .select('*')
         .where('email', email);
       userBoard.userId = rows[0].id;
-      const insertedMember = await trx('user_boards').insert(userBoard);
+      const insertedMember = await trx('user_boards').insert(userBoard, 'id');
       userBoard.id = insertedMember[0];
       rows = await trx('boards')
         .select('*')
@@ -225,7 +225,7 @@ const addCardMember = async (knex, userId, boardId, cardMember) => {
         .select({ id: 'ub.id' });
 
       cardMember.userBoardId = rows[0].id;
-      const insertedMember = await trx('card_members').insert(cardMember);
+      const insertedMember = await trx('card_members').insert(cardMember, 'id');
       cardMember.id = insertedMember[0];
 
       rows = await trx('cards')

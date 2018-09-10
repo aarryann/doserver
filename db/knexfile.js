@@ -2,9 +2,9 @@
 
 module.exports = {
   development: {
-    client: 'mysql2',
+    client: 'pg',
     connection: {
-      database: 'doapp',
+      database: 'doweb',
       user: 'appuser',
       password: 'appuserpw'
     }

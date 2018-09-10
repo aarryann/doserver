@@ -1,11 +1,11 @@
 export default `
   extend type Query {
-    user(id: Int!): User
+    user(id: ID!): User
     currentUser: UserAuth
   }
 
   type AppVersions {
-    id: Int!
+    id: ID!
     appVersion: String
     dbVersion: String
     upgradeMode: String
@@ -14,7 +14,7 @@ export default `
   }
 
   type User {
-    id: Int!
+    id: ID!
     firstName: String
     lastName: String
     email: String
@@ -22,7 +22,7 @@ export default `
   }
 
   type UserAuth {
-    userId: Int!
+    userId: ID!
     token: String!
     user: User
   }
