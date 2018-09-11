@@ -1,5 +1,4 @@
 import { PubSub } from 'apollo-server';
-// import { PubSub } from 'graphql-subscriptions';
 import jwt from 'jsonwebtoken';
 import Knex from 'knex';
 
