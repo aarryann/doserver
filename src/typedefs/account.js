@@ -9,7 +9,7 @@ export default `
     appVersion: String
     dbVersion: String
     upgradeMode: String
-    status: String
+    versionStatus: String
     updated: String
   }
 
@@ -19,6 +19,7 @@ export default `
     lastName: String
     email: String
     password: String
+    userStatus: String
   }
 
   type UserAuth {

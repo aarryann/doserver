@@ -3,96 +3,70 @@
 
 exports.up = (knex) => {
   return knex.schema
-    .createTable('boards', (table) => {
-      table.increments('id').unsigned().primary();
-      table.string('name').notNullable();
-      table.string('slug').unique().notNullable();
-      table.integer('owner').notNullable().unsigned()
-        .references('id')
-        .inTable('users');
-      table.integer('updatedUserId').notNullable().unsigned()
-        .references('id')
-        .inTable('users');
-      table.timestamp('updatedAt').notNullable().defaultTo(knex.fn.now());
+    .createTable('Study', (table) => {
+      table.increments('id').unsigned().primary('studyPK');
+      table.integer('tenantId').notNullable().unsigned()
+        .references('id', 'studyTenantFK')
+        .inTable('Tenant');
+      table.string('studyName', 80).notNullable();
+      table.string('studyTitle').notNullable();
+      table.string('studyStatus', 20).notNullable().defaultTo('Active');
+      table.unique(['tenantId', 'studyName'], 'studyNameTenantUK');
+      table.integer('updatedBy').notNullable().unsigned()
+        .references('id', 'studyUpdatedByFK')
+        .inTable('User');
+      table.timestamp('updatedOn').notNullable().defaultTo(knex.fn.now());
     })
-    .createTable('user_boards', (table) => {
-      table.increments('id').unsigned().primary();
-      table.integer('userId').notNullable().unsigned()
-        .references('id')
-        .inTable('users');
-      table.integer('boardId').notNullable().unsigned()
-        .references('id')
-        .inTable('boards');
-      table.unique(['userId', 'boardId']);
-      table.integer('updatedUserId').notNullable().unsigned()
-        .references('id')
-        .inTable('users');
-      table.timestamp('updatedAt').notNullable().defaultTo(knex.fn.now());
+    .createTable('StudyVersion', (table) => {
+      table.increments('id').unsigned().primary('studyVersionPK');
+      table.integer('studyId').notNullable().unsigned()
+        .references('id', 'versionStudyFK')
+        .inTable('Study');
+      table.string('studyVersion', 10).notNullable();
+      table.string('versionStatus', 20).notNullable().defaultTo('Active');
+      table.unique(['studyId', 'studyVersion'], 'studyVersionUK');
+      table.integer('updatedBy').notNullable().unsigned()
+        .references('id', 'studyVersionUpdatedByFK')
+        .inTable('User');
+      table.timestamp('updatedOn').notNullable().defaultTo(knex.fn.now());
     })
-    .createTable('lists', (table) => {
-      table.increments('id').unsigned().primary();
-      table.string('name').notNullable();
-      table.integer('position').notNullable().unsigned();
-      table.integer('boardId').notNullable().unsigned()
-        .references('id')
-        .inTable('boards');
-      table.unique(['name', 'boardId']);
-      table.integer('updatedUserId').notNullable().unsigned()
-        .references('id')
-        .inTable('users');
-      table.timestamp('updatedAt').notNullable().defaultTo(knex.fn.now());
+    .createTable('StudyEvent', (table) => {
+      table.increments('id').unsigned().primary('studyEventPK');
+      table.integer('studyId').notNullable().unsigned()
+        .references('id', 'eventStudyFK').inTable('Study');
+      table.string('eventCode', 4).notNullable();
+      table.string('eventName', 50).notNullable();
+      table.integer('eventOrder').notNullable().unsigned();
+      table.integer('duration').notNullable().unsigned();
+      table.string('durationUnit', 20).notNullable();
+      table.string('eventStatus', 20).unique().notNullable().defaultTo('Active');
+      table.unique(['studyId', 'eventCode'], 'studyEventCodeUK');
+      table.unique(['studyId', 'eventName'], 'studyEventNameUK');
+      table.integer('updatedBy').notNullable().unsigned()
+        .references('id', 'eventUpdatedByFK')
+        .inTable('User');
+      table.timestamp('updatedOn').notNullable().defaultTo(knex.fn.now());
     })
-    .createTable('cards', (table) => {
-      table.increments('id').unsigned().primary();
-      table.string('name').notNullable();
-      table.string('description');
-      table.integer('position').notNullable().unsigned();
-      table.string('tags');
-      table.integer('listId').notNullable().unsigned()
-        .references('id')
-        .inTable('lists');
-      table.unique(['name', 'listId']);
-      table.integer('updatedUserId').notNullable().unsigned()
-        .references('id')
-        .inTable('users');
-      table.timestamp('updatedAt').notNullable().defaultTo(knex.fn.now());
-    })
-    .createTable('card_members', (table) => {
-      table.increments('id').unsigned().primary();
-      table.integer('cardId').notNullable().unsigned()
-        .references('id')
-        .inTable('cards');
-      table.integer('userBoardId').notNullable().unsigned()
-        .references('id')
-        .inTable('cards');
-      table.unique(['userBoardId', 'cardId']);
-      table.integer('updatedUserId').notNullable().unsigned()
-        .references('id')
-        .inTable('users');
-      table.timestamp('updatedAt').notNullable().defaultTo(knex.fn.now());
-    })
-    .createTable('comments', (table) => {
-      table.increments('id').unsigned().primary();
-      table.string('text').notNullable();
-      table.integer('userId').notNullable().unsigned()
-        .references('id')
-        .inTable('users');
-      table.integer('cardId').notNullable().unsigned()
-        .references('id')
-        .inTable('cards');
-      table.integer('updatedUserId').notNullable().unsigned()
-        .references('id')
-        .inTable('users');
-      table.timestamp('updatedAt').notNullable().defaultTo(knex.fn.now());
+    .createTable('StudyConsent', (table) => {
+      table.increments('id').unsigned().primary('studyConsentPK');
+      table.integer('studyId').notNullable().unsigned()
+        .references('id', 'consentStudyFK').inTable('Study');
+      table.integer('versionId').notNullable().unsigned()
+        .references('id', 'consentStudyVersionFK').inTable('Study');
+      table.string('url', 500).notNullable();
+      table.string('consentStatus', 20).unique().notNullable().defaultTo('Active');
+      table.unique(['studyId', 'versionId'], 'consentStudyVersionUK');
+      table.integer('updatedBy').notNullable().unsigned()
+        .references('id', 'consentUpdatedByFK')
+        .inTable('User');
+      table.timestamp('updatedOn').notNullable().defaultTo(knex.fn.now());
     });
 };
 
 exports.down = knex => {
   return knex.schema
-    .dropTableIfExists('comments')
-    .dropTableIfExists('card_members')
-    .dropTableIfExists('cards')
-    .dropTableIfExists('lists')
-    .dropTableIfExists('user_boards')
-    .dropTableIfExists('boards');
+    .dropTableIfExists('StudyConsent')
+    .dropTableIfExists('StudyEvent')
+    .dropTableIfExists('StudyVersion')
+    .dropTableIfExists('Study');
 };

@@ -1,5 +1,5 @@
 const getBoardMembers = async (knex, boardId) => {
-  const rows = await knex('users as u')
+  const rows = await knex('User as u')
     .innerJoin('user_boards as ub', 'ub.userId', 'u.id')
     .where('ub.boardId', boardId)
     .select('u.*');
@@ -8,7 +8,7 @@ const getBoardMembers = async (knex, boardId) => {
 };
 
 const getCardMembers = async (knex, cardId) => {
-  const rows = await knex('users as u')
+  const rows = await knex('User as u')
     .innerJoin('user_boards as ub', 'ub.userId', 'u.id')
     .innerJoin('card_members as cm', 'cm.userBoardId', 'ub.id')
     .where('cm.cardId', cardId)
@@ -96,7 +96,7 @@ const getCommentsForCard = async (knex, cardId) => {
 
 const createBoard = async (knex, board) => {
   board.slug = board.name.toLowerCase().replace(/[^\w-]+/g, '-');
-  board.updatedAt = knex.fn.now();
+  board.updatedOn = knex.fn.now();
   return knex
     .transaction(async trx => {
       const insertedBoard = await trx('boards').insert(board, 'id');
@@ -105,8 +105,8 @@ const createBoard = async (knex, board) => {
       await trx('user_boards').insert({
         userId: board.owner,
         boardId: board.id,
-        updatedUserId: board.updatedUserId,
-        updatedAt: board.updatedAt
+        updatedBy: board.updatedBy,
+        updatedOn: board.updatedOn
       });
 
       return board;
@@ -118,7 +118,7 @@ const createBoard = async (knex, board) => {
 };
 
 const createList = async (knex, list) => {
-  list.updatedAt = knex.fn.now();
+  list.updatedOn = knex.fn.now();
   return knex
     .transaction(async trx => {
       const maxPos = await trx('lists')
@@ -146,7 +146,7 @@ const createList = async (knex, list) => {
 };
 
 const createCard = async (knex, card) => {
-  card.updatedAt = knex.fn.now();
+  card.updatedOn = knex.fn.now();
   return knex
     .transaction(async trx => {
       const maxPos = await trx('cards')
@@ -175,7 +175,7 @@ const createCard = async (knex, card) => {
 };
 
 const addCardComment = async (knex, comment) => {
-  comment.updatedAt = knex.fn.now();
+  comment.updatedOn = knex.fn.now();
   return knex
     .transaction(async trx => {
       const insertedComment = await trx('comments').insert(comment, 'id');
@@ -193,10 +193,10 @@ const addCardComment = async (knex, comment) => {
 };
 
 const addBoardMember = async (knex, email, userBoard) => {
-  userBoard.updatedAt = knex.fn.now();
+  userBoard.updatedOn = knex.fn.now();
   return knex
     .transaction(async trx => {
-      let rows = await trx('users')
+      let rows = await trx('User')
         .select('*')
         .where('email', email);
       userBoard.userId = rows[0].id;
@@ -214,7 +214,7 @@ const addBoardMember = async (knex, email, userBoard) => {
 };
 
 const addCardMember = async (knex, userId, boardId, cardMember) => {
-  cardMember.updatedAt = knex.fn.now();
+  cardMember.updatedOn = knex.fn.now();
   return knex
     .transaction(async trx => {
       let rows = await trx('user_boards as ub')

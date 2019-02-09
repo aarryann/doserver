@@ -9,7 +9,7 @@ export default {
     const board = Board.createBoard(ctx.conn.knex, {
       name,
       owner,
-      updatedUserId: ctx.userId
+      updatedBy: ctx.userId
     });
     ctx.conn.pubsub.publish('boardCreated', { boardCreated: board }); // trigger a change to all subscriptions to a new board
     return board;
@@ -18,7 +18,7 @@ export default {
     return Board.createList(ctx.conn.knex, {
       name,
       boardId,
-      updatedUserId: ctx.userId
+      updatedBy: ctx.userId
     });
   },
   createCard: async (_parent, { name, description, tags, listId }, ctx) => {
@@ -27,7 +27,7 @@ export default {
       description,
       tags,
       listId,
-      updatedUserId: ctx.userId
+      updatedBy: ctx.userId
     });
   },
   addCardComment: async (_parent, { text, userId, cardId }, ctx) => {
@@ -35,19 +35,19 @@ export default {
       text,
       userId,
       cardId,
-      updatedUserId: ctx.userId
+      updatedBy: ctx.userId
     });
   },
   addBoardMember: async (_parent, { email, boardId }, ctx) => {
     return Board.addBoardMember(ctx.conn.knex, email, {
       boardId,
-      updatedUserId: ctx.userId
+      updatedBy: ctx.userId
     });
   },
   addCardMember: async (_parent, { userId, boardId, cardId }, ctx) => {
     return Board.addCardMember(ctx.conn.knex, userId, boardId, {
       cardId,
-      updatedUserId: ctx.userId
+      updatedBy: ctx.userId
     });
   },
   removeCardMember: async (_parent, { userId, boardId, cardId }, ctx) => {

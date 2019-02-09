@@ -2,7 +2,7 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
 const getUserDetails = async (knex, id) => {
-  const rows = await knex('users')
+  const rows = await knex('User')
     .select('*')
     .where('id', id);
 
@@ -13,7 +13,7 @@ const login = async (knex, email, password) => {
   try {
     const rows = await knex
       .select('*')
-      .from('users')
+      .from('User')
       .where('email', email);
 
     const user = rows[0];
@@ -36,7 +36,7 @@ const currentUser = async (knex, userId, token) => {
     // eslint-disable-next-line
     const rows = await knex
       .select('*')
-      .from('users')
+      .from('User')
       .where('id', userId);
 
     // const user = rows[0];

@@ -5,11 +5,11 @@ const bcrypt =  require('bcryptjs');
 exports.seed = async function(knex, Promise) {
   // Deletes ALL existing entries
   const encyptedSeedPassword = await bcrypt.hash('12345678', 10);
-  return knex('users')
+  return knex('User')
     .del()
     .then(function() {
       // Inserts seed entries
-      return knex('users').insert([
+      return knex('User').insert([
         {
           id: 1,
           firstName: 'John',
