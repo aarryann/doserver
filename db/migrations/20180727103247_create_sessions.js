@@ -15,10 +15,10 @@ exports.up = (knex) => {
     .createTable('Tenant', (table) => {
       table.increments('id').unsigned().primary('tenantPK');
       table.string('tenantName', 80).unique('tenantNameUK').notNullable();
-      table.string('tenantStatus', 20).notNullable().defaultTo('Active');
       table.integer('appVersionId').notNullable().unsigned()
         .references('id', 'tenantAppVersionFK')
         .inTable('AppVersion');
+      table.string('status', 20).notNullable().defaultTo('Active');
       table.timestamp('updatedOn').notNullable().defaultTo(knex.fn.now());
     })
     .createTable('User', (table) => {
@@ -27,7 +27,7 @@ exports.up = (knex) => {
       table.string('lastName').notNullable();
       table.string('email').unique().notNullable();
       table.string('password').notNullable();
-      table.string('userStatus', 20).notNullable().defaultTo('Active');
+      table.string('status', 20).notNullable().defaultTo('Active');
       table.integer('updatedBy').unsigned()
         .references('id', 'userUpdatedByFK')
         .inTable('User');

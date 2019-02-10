@@ -8,9 +8,9 @@ exports.up = (knex) => {
       table.integer('tenantId').notNullable().unsigned()
         .references('id', 'studyTenantFK')
         .inTable('Tenant');
-      table.string('studyName', 80).notNullable();
-      table.string('studyTitle').notNullable();
-      table.string('studyStatus', 20).notNullable().defaultTo('Active');
+      table.string('name', 80).notNullable();
+      table.string('title').notNullable();
+      table.string('status', 20).notNullable().defaultTo('Active');
       table.unique(['tenantId', 'studyName'], 'studyNameTenantUK');
       table.integer('updatedBy').notNullable().unsigned()
         .references('id', 'studyUpdatedByFK')
@@ -23,7 +23,7 @@ exports.up = (knex) => {
         .references('id', 'versionStudyFK')
         .inTable('Study');
       table.string('studyVersion', 10).notNullable();
-      table.string('versionStatus', 20).notNullable().defaultTo('Active');
+      table.string('status', 20).notNullable().defaultTo('Active');
       table.unique(['studyId', 'studyVersion'], 'studyVersionUK');
       table.integer('updatedBy').notNullable().unsigned()
         .references('id', 'studyVersionUpdatedByFK')
@@ -39,7 +39,7 @@ exports.up = (knex) => {
       table.integer('eventOrder').notNullable().unsigned();
       table.integer('duration').notNullable().unsigned();
       table.string('durationUnit', 20).notNullable();
-      table.string('eventStatus', 20).unique().notNullable().defaultTo('Active');
+      table.string('status', 20).unique().notNullable().defaultTo('Active');
       table.unique(['studyId', 'eventCode'], 'studyEventCodeUK');
       table.unique(['studyId', 'eventName'], 'studyEventNameUK');
       table.integer('updatedBy').notNullable().unsigned()
@@ -54,7 +54,7 @@ exports.up = (knex) => {
       table.integer('versionId').notNullable().unsigned()
         .references('id', 'consentStudyVersionFK').inTable('Study');
       table.string('url', 500).notNullable();
-      table.string('consentStatus', 20).unique().notNullable().defaultTo('Active');
+      table.string('status', 20).unique().notNullable().defaultTo('Active');
       table.unique(['studyId', 'versionId'], 'consentStudyVersionUK');
       table.integer('updatedBy').notNullable().unsigned()
         .references('id', 'consentUpdatedByFK')
