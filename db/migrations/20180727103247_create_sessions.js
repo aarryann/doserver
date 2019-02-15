@@ -26,7 +26,7 @@ exports.up = knex => {
       table.string('firstName', 50).notNullable();
       table.string('lastName', 50).notNullable();
       table.string('email', 100).notNullable().unique('userUK');
-      table.string('password', 50).notNullable();
+      table.string('password', 500).notNullable();
       table.string('status', 20).notNullable().defaultTo('Active');
       table.integer('updatedBy').unsigned()
         .references('id', 'userUpdatedByFK')
