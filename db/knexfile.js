@@ -4,7 +4,7 @@ module.exports = {
   development: {
     client: 'pg',
     connection: {
-      database: 'doweb',
+      database: 'doweb2',
       user: 'appuser',
       password: 'appuserpw'
     }
