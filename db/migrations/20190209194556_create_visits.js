@@ -33,7 +33,7 @@ exports.up = (knex) => {
       table.string('lastName', 200).notNullable();
       table.string('currentGender', 50).notNullable();
       table.timestamp('dob').notNullable();
-      table.string('status', 20).notNullable().defaultTo('Active');
+      table.string('isDobApprox', 5).notNullable().defaultTo('No');
       table.integer('updatedBy').unsigned().notNullable()
         .references('id', 'subjectUpdatedByFK')
         .inTable('User');

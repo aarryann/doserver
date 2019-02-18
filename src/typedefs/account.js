@@ -4,13 +4,21 @@ export default `
     currentUser: UserAuth
   }
 
-  type AppVersions {
+  type AppVersion {
     id: ID!
     appVersion: String
     dbVersion: String
     upgradeMode: String
-    versionStatus: String
-    updated: String
+    status: String
+    updatedOn: String
+  }
+
+  type Tenant {
+    id: ID!
+    tenantName: String
+    appVersion: AppVersion
+    status: String
+    updatedOn: String
   }
 
   type User {
@@ -19,7 +27,9 @@ export default `
     lastName: String
     email: String
     password: String
-    userStatus: String
+    status: String
+    updatedBy: User
+    updatedOn: String
   }
 
   type UserAuth {

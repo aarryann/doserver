@@ -8,7 +8,7 @@ exports.up = (knex) => {
       table.integer('tenantId').unsigned().notNullable()
         .references('id', 'tenantAddressFK')
         .inTable('Tenant');
-      table.string('url', 500).notNullable();
+      table.string('url', 500).notNullable().unique('tenantAddressUK');
       table.string('type', 20).notNullable();
       table.string('isPrimary', 3).notNullable();
       table.string('status', 20).notNullable().defaultTo('Active');

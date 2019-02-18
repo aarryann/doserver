@@ -36,6 +36,7 @@ const server = new ApolloServer({
     if (
       rbq.length > 1 &&
       rbq.indexOf('login') === -1 &&
+      rbq.indexOf('tenantByUrl') === -1 &&
       rbq.indexOf('signup') === -1 &&
       rbq.indexOf('IntrospectionQuery') === -1
     ) {
