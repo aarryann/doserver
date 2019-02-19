@@ -7,7 +7,7 @@ const getTenantByUrl = async (knex, url) => {
 
     const tenant = rows[0];
     // eslint-disable-next-line
-    console.log(tenant);
+    // console.log(tenant);
 
     return {
       ...tenant

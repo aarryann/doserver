@@ -9,12 +9,19 @@ const getUserDetails = async (knex, id) => {
   return rows[0];
 };
 
-const login = async (knex, email, password) => {
+const login = async (knex, email, password, url) => {
   try {
-    const rows = await knex
-      .select('*')
-      .from('User')
-      .where('email', email);
+    const rows = await knex('Tenant as t')
+      .innerJoin('TenantAddress as ta', 'ta.tenantId', 't.id')
+      .innerJoin('TenantUser as tu', 'tu.tenantId', 't.id')
+      .innerJoin('User as u', 'tu.userId', 'u.id')
+      .where('ta.url', url)
+      .andWhere('u.email', email)
+      .select('u.*');
+
+    const tenant = rows[0];
+    // eslint-disable-next-line
+    console.log(tenant);
 
     const user = rows[0];
     const valid = await bcrypt.compare(password, user.password);

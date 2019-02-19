@@ -39,6 +39,6 @@ export default `
   }
 
   extend type Mutation {
-    login(email: String!, password: String!): UserAuth
+    login(email: String!, password: String!, url: String!): UserAuth
   }
 `;

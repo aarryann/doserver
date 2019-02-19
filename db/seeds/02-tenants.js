@@ -21,6 +21,16 @@ exports.seed = async function(knex, Promise) {
       ]);
     })
     .then(function() {
+      return knex('TenantUser').insert([
+        {
+          id: 1,
+          tenantId: 1,
+          userId: 1,
+          updatedBy: 1
+        }
+      ]);
+    })
+    .then(function() {
       return knex('TenantAddress').insert([
         {
           id: 1,
