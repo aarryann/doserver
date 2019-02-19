@@ -6,9 +6,15 @@ exports.seed = async function(knex, Promise) {
   // Deletes ALL existing entries
   const encyptedSeedPassword = await bcrypt.hash('12345678', 10);
   return knex('User')
-    .del()
-    .then(function() {
-      // Inserts seed entries
+    .then(() =>
+      knex('AppVersion').insert([
+        { id: 1, appVersion: '0.1', dbVersion: '0.1', upgradeMode: 'Full' }
+      ])
+    )
+    .then(() =>
+      knex('Tenant').insert([{ id: 1, tenantName: 'First', appVersionId: 1 }])
+    )
+    .then(() => {
       return knex('User').insert([
         {
           id: 1,
