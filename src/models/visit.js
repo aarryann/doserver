@@ -1,7 +1,6 @@
-const getActiveSubjects = async (knex, tenantId) => {
-  const rows = await knex('subject')
-    .select('*')
-    .where('tenant', tenantId);
+//eslint-disable-next-line
+const getAllSubjects = async (knex, studyId, siteId, tenantId, userId) => {
+  const rows = await knex('Subject').select('*');
 
   return rows;
 };
@@ -11,7 +10,7 @@ const registerSubject = async (knex, subject) => {
   subject.updatedOn = knex.fn.now();
   return knex
     .transaction(async trx => {
-      const insertedSubject = await trx('subject').insert(subject, 'id');
+      const insertedSubject = await trx('Subject').insert(subject, 'id');
       subject.id = insertedSubject[0];
 
       return subject;
@@ -23,7 +22,7 @@ const registerSubject = async (knex, subject) => {
 };
 
 export default {
-  getActiveSubjects,
+  getAllSubjects,
 
   registerSubject
 };

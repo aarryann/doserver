@@ -1,4 +1,8 @@
 export default `
+  extend type Query {
+    allSubjects(studyId: ID!, siteId: ID!): [Subject]
+  }
+
   type Screening {
     id: ID!
     tenant: Tenant
