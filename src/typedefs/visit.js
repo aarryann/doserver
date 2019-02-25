@@ -1,6 +1,7 @@
 export default `
   extend type Query {
     allSubjects(studyId: ID!, siteId: ID!): [Subject]
+    oneSubject: [Subject]
   }
 
   type Screening {
@@ -133,6 +134,10 @@ export default `
 
   # this schema allows the following mutation:
   extend type Mutation {
-    registerSubject(firstName: String!, middleInitial: String, lastName: String!, currentGender: String!, dob: String!, isDobApprox: Boolean): Subject
+    addSubject(firstName: String!, middleInitial: String, lastName: String!, currentGender: String!, dob: String!, isDobApprox: Boolean): Subject
+  }
+
+  extend type Subscription {
+    subjectAdded: Subject
   }
 `;

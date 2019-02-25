@@ -5,7 +5,7 @@ const getAllSubjects = async (knex, studyId, siteId, tenantId, userId) => {
   return rows;
 };
 
-const registerSubject = async (knex, subject) => {
+const addSubject = async (knex, subject) => {
   subject.pid = subject.firstName.toLowerCase().replace(/[^\w-]+/g, '-');
   subject.updatedOn = knex.fn.now();
   return knex
@@ -24,5 +24,5 @@ const registerSubject = async (knex, subject) => {
 export default {
   getAllSubjects,
 
-  registerSubject
+  addSubject
 };
