@@ -6,15 +6,15 @@
     "dev": "npm-run-all --parallel start"
   },
   "dependencies": {
-    "apollo-server": "^2.4.8",
-    "apollo-server-express": "^2.4.8",
+    "apollo-server": "^2.5.0",
+    "apollo-server-express": "^2.5.0",
     "bcryptjs": "2.4.3",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "dataloader": "^1.4.0",
     "dotenv": "^8.0.0",
     "express": "^4.16.4",
-    "graphql": "^14.2.1",
+    "graphql": "^14.3.0",
     "graphql-resolvers": "^0.3.3",
     "jsonwebtoken": "^8.4.0",
     "knex": "^0.16.5",
