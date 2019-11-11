@@ -34,8 +34,8 @@ export default `
 
   type UserAuth {
     userId: ID!
-    token: String!
     user: User
+    sid: String
   }
 
   extend type Mutation {

@@ -1,4 +1,4 @@
-import Account from '../../models/account.js';
+import Account from "../../models/account.js";
 
 export default {
   user: async (_, { id }, ctx) => {
@@ -6,6 +6,6 @@ export default {
   },
 
   currentUser: async (_p, _a, ctx) => {
-    return Account.currentUser(ctx.conn.knex, ctx.userId, ctx.token);
+    return Account.currentUser(ctx.conn.knex, ctx.token);
   }
 };
