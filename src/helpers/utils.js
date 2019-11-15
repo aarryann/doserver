@@ -1,5 +1,4 @@
 import { PubSub } from "apollo-server";
-import jwt from "jsonwebtoken";
 import Knex from "knex";
 
 export const getMe = async req => {
@@ -8,7 +7,7 @@ export const getMe = async req => {
     const token = Authorization.replace("Bearer ", "");
     const rows = await knex("sessions as s")
       .innerJoin("User as u", "s.user_id", "u.id")
-      .where("s.uid", sid)
+      .where("s.uid", token)
       .where("s.expiry", ">", "now()")
       .select("u.*");
 

@@ -32,7 +32,7 @@ const login = async (knex, email, password, url) => {
 
     return {
       userId: user.id,
-      sid: session[0]
+      token: session[0]
     };
   } catch (e) {
     throw new Error("Invalid email or password");
@@ -50,10 +50,10 @@ const currentUser = async (knex, token) => {
     const user = rows[0];
     return {
       userId: user.id,
-      sid: sid
+      token: token
     };
   } catch (e) {
-    throw new Error("Invalid sid");
+    throw new Error(`Invalid token: ${token}`);
   }
 };
 
