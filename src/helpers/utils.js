@@ -1,18 +1,16 @@
 import { PubSub } from "apollo-server";
 import Knex from "knex";
+import jwt from "jsonwebtoken";
 
 export const getMe = async req => {
   try {
+    // this is a convenient time to clear out expired sessions
     const Authorization = req.get("Authorization");
     const token = Authorization.replace("Bearer ", "");
-    const rows = await knex("sessions as s")
-      .innerJoin("User as u", "s.user_id", "u.id")
-      .where("s.uid", token)
-      .where("s.expiry", ">", "now()")
-      .select("u.*");
-
-    const user = rows[0];
-    return { userId: user.id, token };
+    const {
+      user: { userId }
+    } = jwt.verify(token, process.env.APP_SECRET);
+    return { userId, token };
   } catch (e) {
     throw new AuthError();
   }

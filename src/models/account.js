@@ -12,9 +12,6 @@ const getUserDetails = async (knex, id) => {
 const login = async (knex, email, password, url) => {
   try {
     // this is a convenient time to clear out expired sessions
-    knex("sessions")
-      .where("expiry", "<", "now()")
-      .del();
     const rows = await knex("Tenant as t")
       .innerJoin("TenantAddress as ta", "ta.tenantId", "t.id")
       .innerJoin("TenantUser as tu", "tu.tenantId", "t.id")
@@ -28,11 +25,9 @@ const login = async (knex, email, password, url) => {
     if (!valid) {
       throw new Error("Invalid email or password");
     }
-    const session = await knex("sessions").insert({ user_id: user.id }, "uid");
-
     return {
-      userId: user.id,
-      token: session[0]
+      token: jwt.sign({ user: { userId: user.id } }, process.env.APP_SECRET),
+      userId: user.id
     };
   } catch (e) {
     throw new Error("Invalid email or password");
