@@ -5,48 +5,45 @@ exports.up = (knex) => {
   return knex.schema
     .createTable('Study', (table) => {
       table.increments('id').unsigned().primary('studyPK');
-      table.integer('tenantId').unsigned().notNullable()
-        .references('id', 'studyTenantFK')
-        .inTable('Tenant');
-      table.string('name', 80).notNullable();
-      table.string('title', 255).notNullable();
+      table.string('code', 20).notNullable();
+      table.string('description', 200).notNullable();
       table.string('status', 20).notNullable().defaultTo('Active');
+      table.integer('order').unsigned().notNullable();
+      table.integer('tenantId').unsigned().notNullable().references('id', 'studyTenantFK').inTable('Tenant');
       table.integer('updatedBy').unsigned().notNullable()
         .references('id', 'studyUpdatedByFK')
         .inTable('User');
       table.timestamp('updatedOn').notNullable().defaultTo(knex.fn.now());
-      table.unique(['tenantId', 'name'], 'studyUK');
+      table.unique(['tenantId', 'code'], 'studyUK');
     })
     .createTable('StudyVersion', (table) => {
       table.increments('id').unsigned().primary('studyVersionPK');
-      table.integer('studyId').unsigned().notNullable()
-        .references('id', 'versionStudyFK')
-        .inTable('Study');
-      table.string('studyVersion', 10).notNullable();
+      table.string('code', 20).notNullable();
+      table.string('description', 200).notNullable();
       table.string('status', 20).notNullable().defaultTo('Active');
+      table.integer('order').unsigned().notNullable();
+      table.integer('studyId').unsigned().notNullable().references('id', 'versionStudyFK').inTable('Study');
       table.integer('updatedBy').unsigned().notNullable()
         .references('id', 'studyVersionUpdatedByFK')
         .inTable('User');
       table.timestamp('updatedOn').notNullable().defaultTo(knex.fn.now());
-      table.unique(['studyId', 'studyVersion'], 'studyVersionUK');
+      table.unique(['studyId', 'code'], 'studyVersionUK');
     })
     .createTable('StudyEvent', (table) => {
       table.increments('id').unsigned().primary('studyEventPK');
-      table.integer('studyId').unsigned().notNullable()
-        .references('id', 'eventStudyFK')
-        .inTable('Study');
-      table.string('eventCode', 20).notNullable();
-      table.string('eventName', 50).notNullable();
-      table.integer('eventOrder').unsigned().notNullable();
+      table.string('code', 20).notNullable();
+      table.string('description', 200).notNullable();
+      table.string('status', 20).notNullable().defaultTo('Active');
+      table.integer('order').unsigned().notNullable();
       table.integer('duration').unsigned().notNullable();
       table.string('durationUnit', 20).notNullable();
-      table.string('status', 20).notNullable().defaultTo('Active');
+      table.integer('studyId').unsigned().notNullable().references('id', 'eventStudyFK').inTable('Study');
       table.integer('updatedBy').unsigned().notNullable()
         .references('id', 'eventUpdatedByFK')
         .inTable('User');
       table.timestamp('updatedOn').notNullable().defaultTo(knex.fn.now());
-      table.unique(['studyId', 'eventName'], 'studyEventNameUK');
-      table.unique(['studyId', 'eventCode'], 'studyEventCodeUK');
+      table.unique(['studyId', 'description'], 'studyEventNameUK');
+      table.unique(['studyId', 'code'], 'studyEventCodeUK');
     })
     .createTable('StudyConsent', (table) => {
       table.increments('id').unsigned().primary('studyConsentPK');
@@ -83,7 +80,7 @@ exports.up = (knex) => {
         .inTable('User');
       table.timestamp('updatedOn').notNullable().defaultTo(knex.fn.now());
       table.foreign(['studyId','eventCode'], 'stepEventCodeFK')
-        .references(['studyId','eventCode'])
+        .references(['studyId','code'])
         .on('StudyEvent');	
     });
 };

@@ -3,24 +3,6 @@
 
 exports.up = (knex) => {
   return knex.schema
-    .createTable('Screening', (table) => {
-      table.increments('id').unsigned().primary('screeningPK');
-      table.integer('tenantId').unsigned().notNullable()
-        .references('id', 'screeningTenantFK')
-        .inTable('Tenant');
-      table.string('mrn', 50);
-      table.string('firstName', 200).notNullable();
-      table.string('middleInitial', 10);
-      table.string('lastName', 200).notNullable();
-      table.string('currentGender', 50).notNullable();
-      table.timestamp('dob').notNullable();
-      table.timestamp('screenedOn').notNullable();
-      table.integer('updatedBy').unsigned().notNullable()
-        .references('id', 'screeningUpdatedByFK')
-        .inTable('User');
-      table.timestamp('updatedOn').notNullable().defaultTo(knex.fn.now());
-      table.unique(['tenantId', 'mrn'], 'screeningUK');
-    })
     .createTable('Subject', (table) => {
       table.increments('id').unsigned().primary('subjectPK');
       table.integer('tenantId').unsigned().notNullable()
@@ -46,9 +28,6 @@ exports.up = (knex) => {
       table.integer('subjectId').unsigned()
         .references('id', 'studySubjectFK')
         .inTable('Subject');
-      table.integer('screeningId').unsigned().notNullable()
-        .references('id', 'studySubjectScreeningFK')
-        .inTable('Screening');
       table.integer('siteId').unsigned().notNullable()
         .references('id', 'studySubjectSiteFK')
         .inTable('Site');
@@ -80,7 +59,7 @@ exports.up = (knex) => {
         .references('id', 'subjectVisitUpdatedByFK')
         .inTable('User');
       table.timestamp('updatedOn').notNullable().defaultTo(knex.fn.now());
-      table.unique(['studySubjectId', 'eventCode', 'eventName'], 'subjectVisitUK');
+      table.unique(['studySubjectId', 'code', 'eventName'], 'subjectVisitUK');
     })
     .createTable('SubjectConsent', (table) => {
       table.increments('id').unsigned().primary('subjectConsentPK');
@@ -178,5 +157,4 @@ exports.down = knex => {
     .dropTableIfExists('SubjectVisit')
     .dropTableIfExists('StudySubject')
     .dropTableIfExists('Subject')
-    .dropTableIfExists('Screening');
 };
