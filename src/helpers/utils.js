@@ -4,7 +4,6 @@ import jwt from "jsonwebtoken";
 
 export const getMe = async req => {
   try {
-    // this is a convenient time to clear out expired sessions
     const Authorization = req.get("Authorization");
     const token = Authorization.replace("Bearer ", "");
     const {

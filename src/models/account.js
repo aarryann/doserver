@@ -11,7 +11,6 @@ const getUserDetails = async (knex, id) => {
 
 const login = async (knex, email, password, url) => {
   try {
-    // this is a convenient time to clear out expired sessions
     const rows = await knex("Tenant as t")
       .innerJoin("TenantAddress as ta", "ta.tenantId", "t.id")
       .innerJoin("TenantUser as tu", "tu.tenantId", "t.id")
@@ -35,9 +34,10 @@ const login = async (knex, email, password, url) => {
 };
 
 const currentUser = async (knex, token) => {
+  //TODO: Maybe remove Session table later
   try {
-    const rows = await knex("sessions as s")
-      .innerJoin("User as u", "s.user_id", "u.id")
+    const rows = await knex("Session as s")
+      .innerJoin("User as u", "s.userId", "u.id")
       .where("s.uid", token)
       .where("s.expiry", ">", "now()")
       .select("u.*");

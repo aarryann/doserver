@@ -59,7 +59,7 @@ exports.up = (knex) => {
         .references('id', 'subjectVisitUpdatedByFK')
         .inTable('User');
       table.timestamp('updatedOn').notNullable().defaultTo(knex.fn.now());
-      table.unique(['studySubjectId', 'code', 'eventName'], 'subjectVisitUK');
+      table.unique(['studySubjectId', 'eventCode', 'eventName'], 'subjectVisitUK');
     })
     .createTable('SubjectConsent', (table) => {
       table.increments('id').unsigned().primary('subjectConsentPK');
