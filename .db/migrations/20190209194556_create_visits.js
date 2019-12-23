@@ -8,20 +8,29 @@ exports.up = (knex) => {
       table.integer('tenantId').unsigned().notNullable()
         .references('id', 'subjectTenantFK')
         .inTable('Tenant');
-      table.string('mrn', 50);
-      table.string('pid', 50).notNullable();
+      //table.string('mrn', 50);
+      //table.string('pid', 50).notNullable();
       table.string('firstName', 200).notNullable();
       table.string('middleInitial', 10);
       table.string('lastName', 200).notNullable();
-      table.string('currentGender', 50).notNullable();
+      table.string('genderCurrent', 50).notNullable();
+      table.string('genderBirth', 50).notNullable();
       table.timestamp('dob').notNullable();
-      table.string('isDobApprox', 5).notNullable().defaultTo('No');
-      table.integer('updatedBy').unsigned().notNullable()
-        .references('id', 'subjectUpdatedByFK')
-        .inTable('User');
-      table.timestamp('updatedOn').notNullable().defaultTo(knex.fn.now());
-      table.unique(['tenantId', 'mrn'], 'subjectTenantMrnUK');
-      table.unique(['tenantId', 'pid'], 'subjectTenantPidUK');
+      table.string('dobApprox', 5).notNullable().defaultTo('No');
+      table.string('race', 200).notNullable();
+      table.string('ethnicity', 50).notNullable();
+      table.string('maritalStatus', 20).notNullable();
+      table.string('education', 200).notNullable();
+      table.string('profession', 200).notNullable();
+      table.string('contactPhone', 200).notNullable();
+      table.string('contactEmail', 200).notNullable();
+      table.string('nationalId', 200).notNullable();
+      //table.integer('updatedBy').unsigned().notNullable()
+      //  .references('id', 'subjectUpdatedByFK')
+      //  .inTable('User');
+      //table.timestamp('updatedOn').notNullable().defaultTo(knex.fn.now());
+      //table.unique(['tenantId', 'mrn'], 'subjectTenantMrnUK');
+      //table.unique(['tenantId', 'pid'], 'subjectTenantPidUK');
     })
     .createTable('StudySubject', (table) => {
       table.increments('id').unsigned().primary('studySubjectPK');
