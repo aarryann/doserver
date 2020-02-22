@@ -27,8 +27,9 @@ const corsOptions = {
 */
 const app = express();
 app.use("*", cors(corsOptions));
-const PORT = 4000;
+const PORT = process.env.PORT || 4000;
 
+console.log(`process.env.APP_SECRET:${process.env.APP_SECRET}`);
 // Start the server
 const server = new ApolloServer({
   typeDefs,
