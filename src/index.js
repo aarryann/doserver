@@ -9,11 +9,11 @@ import { getMe, knex, pubsub } from "./helpers/utils";
 import cors from "cors";
 
 const corsOptions = {
-  origin: "http://localhost:3000",
+  origin: "http://localhost:4812",
   optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
 };
 /*
-const whitelist = ['http://localhost:3000', 'http://localhost:5000']
+const whitelist = ['http://localhost:4812', 'http://localhost:4813']
 const corsOptions = {
   origin: function (origin, callback) {
     if (whitelist.indexOf(origin) !== -1) {
@@ -27,7 +27,7 @@ const corsOptions = {
 */
 const app = express();
 app.use("*", cors(corsOptions));
-const PORT = process.env.PORT || 4000;
+const PORT = process.env.PORT || 4811;
 
 console.log(`process.env.APP_SECRET:${process.env.APP_SECRET}`);
 // Start the server

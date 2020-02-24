@@ -18,9 +18,11 @@ WORKDIR /app
 COPY --from=0 /app .
 COPY . .
 
+EXPOSE 4811
+
 CMD ["node", "start.js"]
 
 #docker build -t aarryann/doserver .
-#docker run --expose 4000 --env PORT=4000 -p 4000:4000 --name govex_api --add-host database:192.168.1.183 aarryann/doserver
+#docker run --expose 4811 --env PORT=4811 -p 4811:4811 --name govex_api --add-host database:192.168.1.183 aarryann/doserver
 #docker inspect -f "{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}" 6e2391644986
 #psql -U appuser -h 192.168.1.183

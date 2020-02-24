@@ -38,7 +38,7 @@ graphql create my-app --boilerplate node-advanced
 # 3. Navigate to the new project
 cd my-app
 
-# 4. Start server (runs on http://localhost:4000) and open GraphQL Playground
+# 4. Start server (runs on http://localhost:4811) and open GraphQL Playground
 yarn dev
 ```
 
@@ -48,8 +48,8 @@ yarn dev
 
 ### Commands
 
-* `yarn start` starts GraphQL server on `http://localhost:4000`
-* `yarn dev` starts GraphQL server on `http://localhost:4000` _and_ opens GraphQL Playground
+* `yarn start` starts GraphQL server on `http://localhost:4811`
+* `yarn dev` starts GraphQL server on `http://localhost:4811` _and_ opens GraphQL Playground
 * `yarn playground` opens the GraphQL Playground for the `projects` from [`.graphqlconfig.yml`](./.graphqlconfig.yml)
 * `yarn prisma <subcommand>` gives access to local version of Prisma CLI (e.g. `yarn prisma deploy`)
 

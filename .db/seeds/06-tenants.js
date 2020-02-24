@@ -1,5 +1,5 @@
 // eslint-disable-next-line
-exports.seed = async function(knex, Promise) {
+exports.seed = async function (knex, Promise) {
   return knex('TenantSite')
     .then(() =>
       knex('TenantUser').insert([
@@ -11,7 +11,7 @@ exports.seed = async function(knex, Promise) {
         {
           id: 1,
           tenantId: 1,
-          url: 'http://localhost:3000',
+          url: 'http://localhost:4812',
           type: 'application',
           isPrimary: 'Yes',
           updatedBy: 1
