@@ -18,10 +18,10 @@
     "express": "^4.17.1",
     "graphql": "^14.6.0",
     "graphql-resolvers": "^0.4.2",
-    "jsonwebtoken": "^8.4.0",
+    "jsonwebtoken": "^8.5.1",
     "knex": "^0.20.10",
     "mysql2": "^2.1.0",
-    "pg": "^7.18.1"
+    "pg": "^7.18.2"
   },
   "devDependencies": {
     "faker": "^4.1.0",
