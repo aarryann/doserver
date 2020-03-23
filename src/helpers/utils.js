@@ -1,40 +1,30 @@
-const jwt = require('jsonwebtoken')
+import { PubSub } from "apollo-server";
+import Knex from "knex";
+import jwt from "jsonwebtoken";
 
-function getUserFromToken(auth) {
-  console.log(auth);
-  console.log(process.env.APP_SECRET);
-  if (!auth || auth.length === 0) {
-    console.log('NULL check');
-    return null;
-  }
-  const token = auth.replace('Bearer ', '');
-  const { userId } = jwt.verify(token, process.env.APP_SECRET);
-  return userId;
-}
-
-function getUserId(ctx, req) {
-  if(!req && ctx){
-    req = ctx.request;
-  }
-  const Authorization = req.get('Authorization');
-  if (Authorization) {
-    const token = Authorization.replace('Bearer ', '');
-    const { userId } = jwt.verify(token, process.env.APP_SECRET);
-    //console.log(userId);
+export const getMe = async req => {
+  try {
+    const Authorization = req.get("Authorization");
+    const token = Authorization.replace("Bearer ", "");
+    const {
+      user: { userId }
+    } = jwt.verify(token, process.env.APP_SECRET);
     return { userId, token };
+  } catch (e) {
+    throw new AuthError();
   }
+};
 
-  throw new AuthError();
-}
-
-class AuthError extends Error {
+export class AuthError extends Error {
   constructor() {
-    super('Not authorized');
+    super("Not authorized");
   }
 }
 
-module.exports = {
-  getUserFromToken,
-  getUserId,
-  AuthError
-}
+export const pubsub = new PubSub();
+
+export const knex = Knex({
+  client: "pg",
+  connection: process.env.DATABASE_URL,
+  searchPath: ["knex", "public"]
+});

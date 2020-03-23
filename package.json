@@ -1,27 +1,35 @@
 {
   "name": "doserver",
   "scripts": {
-    "start": "nodemon -e js,graphql -x node -r dotenv/config src/index.js",
+    "start": "node start.js",
+    "startmon": "nodemon start.js",
     "debug": "nodemon -e js,graphql -x node --inspect -r dotenv/config src/index.js",
     "dev": "npm-run-all --parallel start"
   },
   "dependencies": {
-    "apollo-server": "^2.0.0",
+    "apollo-server": "^2.10.1",
+    "apollo-server-express": "^2.10.1",
     "bcryptjs": "2.4.3",
-    "graphql-tools": "^4.0.6",
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "dataloader": "^2.0.0",
+    "dotenv": "^8.2.0",
+    "esm": "^3.2.25",
+    "express": "^4.17.1",
+    "graphql": "^14.6.0",
+    "graphql-resolvers": "^0.4.2",
     "jsonwebtoken": "^8.5.1",
-    "knex": "^0.20.2",
-    "lodash": "^4.17.10",
-    "mysql2": "^2.0.1"
+    "knex": "^0.20.10",
+    "mysql2": "^2.1.0",
+    "pg": "^7.18.2"
   },
   "devDependencies": {
-    "dotenv": "^8.2.0",
-    "graphql-cli": "^3.0.14",
+    "faker": "^4.1.0",
     "npm-run-all": "^4.1.5"
   },
   "description": "<h1 align=\"center\"><strong>Boilerplate for an Advanced GraphQL Server</strong></h1>",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "server.js",
   "keywords": [],
   "author": "",
   "license": "ISC"

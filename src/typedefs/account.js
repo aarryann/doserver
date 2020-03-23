@@ -1,37 +1,44 @@
-const Account = `
-  type AppVersions {
-    id: Int!
+export default `
+  extend type Query {
+    user(id: ID!): User
+    currentUser: UserAuth
+  }
+
+  type AppVersion {
+    id: ID!
     appVersion: String
     dbVersion: String
     upgradeMode: String
     status: String
-    updated: String
+    updatedOn: String
+  }
+
+  type Tenant {
+    id: ID!
+    tenantName: String
+    appVersion: AppVersion
+    status: String
+    updatedOn: String
   }
 
   type User {
-    id: Int!
+    id: ID!
     firstName: String
     lastName: String
     email: String
     password: String
+    status: String
+    updatedBy: User
+    updatedOn: String
   }
 
   type UserAuth {
-    userId: Int!
-    token: String!
+    userId: ID!
     user: User
+    token: String
   }
 
-  # the schema allows the following query:
-  type Query {
-    user(id: Int!): User
-    currentUser: UserAuth
-  }
-
-  # this schema allows the following mutation:
-  type Mutation {
-    login ( email: String!, password: String! ): UserAuth
+  extend type Mutation {
+    login(email: String!, password: String!, url: String!): UserAuth
   }
 `;
-
-module.exports = Account;

@@ -1,31 +1,56 @@
-const _ = require('lodash');
-const Board = require('../../models/board.js');
+import Board from '../../models/board.js';
 
-const BoardMutation = {
-  createBoard: async (parent, { name, owner }, ctx, info) => {
-    return Board.createBoard(ctx.conn.knex, {name, owner, 
-      updatedUserId: ctx.userId});
+export default {
+  // eslint-disable-next-line
+  createBoard: async (_parent, { name, owner }, ctx, _info) => {
+    if (!owner) {
+      owner = ctx.userId;
+    }
+    const board = Board.createBoard(ctx.conn.knex, {
+      name,
+      owner,
+      updatedBy: ctx.userId
+    });
+    ctx.conn.pubsub.publish('boardCreated', { boardCreated: board }); // trigger a change to all subscriptions to a new board
+    return board;
   },
-  createList: async (parent, { name, boardId }, ctx, info) => {
-    return Board.createList(ctx.conn.knex, {name, boardId, updatedUserId: ctx.userId});
+  createList: async (_parent, { name, boardId }, ctx) => {
+    return Board.createList(ctx.conn.knex, {
+      name,
+      boardId,
+      updatedBy: ctx.userId
+    });
   },
-  createCard: async (parent, { name, description, tags, listId }, 
-      ctx, info) => {
-    return Board.createCard(ctx.conn.knex, {name, description, 
-      tags, listId, updatedUserId: ctx.userId});
+  createCard: async (_parent, { name, description, tags, listId }, ctx) => {
+    return Board.createCard(ctx.conn.knex, {
+      name,
+      description,
+      tags,
+      listId,
+      updatedBy: ctx.userId
+    });
   },
-  addCardComment: async (parent, { text, userId, cardId }, ctx, info) => {
-    return Board.addCardComment(ctx.conn.knex, {text, userId, cardId, updatedUserId: ctx.userId});
+  addCardComment: async (_parent, { text, userId, cardId }, ctx) => {
+    return Board.addCardComment(ctx.conn.knex, {
+      text,
+      userId,
+      cardId,
+      updatedBy: ctx.userId
+    });
   },
-  addBoardMember: async (parent, { email, boardId }, ctx, info) => {
-    return Board.addBoardMember(ctx.conn.knex, email, {boardId, updatedUserId: ctx.userId});
+  addBoardMember: async (_parent, { email, boardId }, ctx) => {
+    return Board.addBoardMember(ctx.conn.knex, email, {
+      boardId,
+      updatedBy: ctx.userId
+    });
   },
-  addCardMember: async (parent, { userId, boardId, cardId }, ctx, info) => {
-    return Board.addCardMember(ctx.conn.knex, userId, boardId, {cardId, updatedUserId: ctx.userId});
+  addCardMember: async (_parent, { userId, boardId, cardId }, ctx) => {
+    return Board.addCardMember(ctx.conn.knex, userId, boardId, {
+      cardId,
+      updatedBy: ctx.userId
+    });
   },
-  removeCardMember: async (parent, { userId, boardId, cardId }, ctx, info) => {
+  removeCardMember: async (_parent, { userId, boardId, cardId }, ctx) => {
     return Board.removeCardMember(ctx.conn.knex, userId, boardId, cardId);
-  },
-}
-
-module.exports = { BoardMutation }
+  }
+};

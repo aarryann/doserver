@@ -1,7 +1,7 @@
-const Account = require('../../models/account.js');
-const Board = require('../../models/board.js');
+import Account from '../../models/account.js';
+import Board from '../../models/board.js';
 
-const BoardAssociation = {
+export default {
   Board: {
     owner: async (board, _, ctx) => {
       return Account.getUserDetails(ctx.conn.knex, board.owner);
@@ -11,7 +11,7 @@ const BoardAssociation = {
     },
     lists: async (board, _, ctx) => {
       return Board.getListsForBoard(ctx.conn.knex, board.id);
-    },
+    }
   },
 
   List: {
@@ -20,7 +20,7 @@ const BoardAssociation = {
     },
     cards: async (list, _, ctx) => {
       return Board.getCardsForList(ctx.conn.knex, list.id);
-    },
+    }
   },
 
   Card: {
@@ -32,7 +32,7 @@ const BoardAssociation = {
     },
     comments: async (card, _, ctx) => {
       return Board.getCommentsForCard(ctx.conn.knex, card.id);
-    },
+    }
   },
 
   Comment: {
@@ -41,10 +41,6 @@ const BoardAssociation = {
     },
     card: async (comment, _, ctx) => {
       return Board.getCardDetails(ctx.conn.knex, comment.cardId);
-    },
-  },
-
-}
-
-module.exports = { BoardAssociation }
-
+    }
+  }
+};

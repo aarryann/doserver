@@ -1,8 +1,8 @@
-const { getUserId } = require('../../helpers/utils')
+import { getUserId } from '../../helpers/utils';
 
-const post = {
-  async createDraft(parent, { title, text }, ctx, info) {
-    const userId = getUserId(ctx)
+export default {
+  async createDraft(_parent, { title, text }, ctx, info) {
+    const userId = getUserId(ctx);
     return ctx.db.mutation.createPost(
       {
         data: {
@@ -10,45 +10,45 @@ const post = {
           text,
           isPublished: false,
           author: {
-            connect: { id: userId },
-          },
-        },
+            connect: { id: userId }
+          }
+        }
       },
       info
-    )
+    );
   },
 
-  async publish(parent, { id }, ctx, info) {
-    const userId = getUserId(ctx)
+  async publish(_parent, { id }, ctx, info) {
+    const userId = getUserId(ctx);
     const postExists = await ctx.db.exists.Post({
       id,
-      author: { id: userId },
-    })
+      author: { id: userId }
+    });
     if (!postExists) {
-      throw new Error(`Post not found or you're not the author`)
+      // eslint-disable-next-line
+      throw new Error(`Post not found or you're not the author`);
     }
 
     return ctx.db.mutation.updatePost(
       {
         where: { id },
-        data: { isPublished: true },
+        data: { isPublished: true }
       },
-      info,
-    )
+      info
+    );
   },
 
-  async deletePost(parent, { id }, ctx, info) {
-    const userId = getUserId(ctx)
+  async deletePost(_parent, { id }, ctx) {
+    const userId = getUserId(ctx);
     const postExists = await ctx.db.exists.Post({
       id,
-      author: { id: userId },
-    })
+      author: { id: userId }
+    });
     if (!postExists) {
-      throw new Error(`Post not found or you're not the author`)
+      // eslint-disable-next-line
+      throw new Error(`Post not found or you're not the author`);
     }
 
-    return ctx.db.mutation.deletePost({ where: { id } })
-  },
-}
-
-module.exports = { post }
+    return ctx.db.mutation.deletePost({ where: { id } });
+  }
+};

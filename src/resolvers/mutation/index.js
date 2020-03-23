@@ -1,11 +1,11 @@
-const { AccountMutation } = require('./account')
-const { BoardMutation } = require('./board')
+import AccountMutation from './account';
+import BoardMutation from './board';
+import VisitMutation from './visit';
 
-const Mutation = {
+export default {
   Mutation: {
     ...AccountMutation,
     ...BoardMutation,
+    ...VisitMutation
   }
-}
-
-module.exports = { Mutation }
+};

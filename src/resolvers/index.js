@@ -1,11 +1,6 @@
-const { Query } = require('./query')
-const { Mutation } = require('./mutation')
-const { Subscription } = require('./subscription')
-const { Association } = require('./association')
+import Query from './query';
+import Mutation from './mutation';
+import Subscription from './subscription';
+import Association from './association';
 
-module.exports = [
-  Query,
-  Mutation,
-//  Subscription,
-  Association,
-]
+export default [Query, Mutation, Subscription, Association];

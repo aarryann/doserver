@@ -1,7 +1,10 @@
-const Account = require('./account');
-const Board = require('./board');
+import account from './account';
+import board from './board';
+import link from './link';
+import masterData from './masterData';
+import study from './study';
+import site from './site';
+import tenant from './tenant';
+import visit from './visit';
 
-module.exports = [
-  Account,
-  Board,
-]
+export default [link, account, board, masterData, study, site, visit, tenant];

@@ -1,9 +1,7 @@
-const { AccountAssociation } = require('./account')
-const { BoardAssociation } = require('./board')
+import AccountAssociation from './account';
+import BoardAssociation from './board';
 
-const Association = {
+export default {
   ...AccountAssociation,
-  ...BoardAssociation,
-}
-
-module.exports = { Association }
+  ...BoardAssociation
+};

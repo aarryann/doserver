@@ -1,11 +1,13 @@
-const { AccountQuery } = require('./account')
-const { BoardQuery } = require('./board')
+import AccountQuery from './account';
+import BoardQuery from './board';
+import TenantQuery from './tenant';
+import VisitQuery from './visit';
 
-const Query = {
+export default {
   Query: {
     ...AccountQuery,
     ...BoardQuery,
+    ...TenantQuery,
+    ...VisitQuery
   }
-}
-
-module.exports = { Query }
+};

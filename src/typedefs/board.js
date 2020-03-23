@@ -1,17 +1,12 @@
-const Board = `
-  type User {
-    id: Int!
-    firstName: String
-    lastName: String
-    email: String
-    password: String
-    ownedBoards: [Board] 
-    memberBoards: [Board] 
-    otherBoards: [Board] 
+export default `
+  extend type User {
+    ownedBoards: [Board]
+    memberBoards: [Board]
+    otherBoards: [Board]
   }
 
   type Board {
-    id: Int!
+    id: ID!
     name: String
     slug: String
     owner: User
@@ -20,7 +15,7 @@ const Board = `
   }
 
   type List {
-    id: Int!
+    id: ID!
     name: String
     position: Int
     board: Board
@@ -28,7 +23,7 @@ const Board = `
   }
 
   type Card {
-    id: Int!
+    id: ID!
     name: String
     description: String
     tags: String
@@ -39,29 +34,35 @@ const Board = `
   }
 
   type Comment {
-    id: Int!
+    id: ID!
     text: String
     user: User
     card: Card
   }
 
   # the schema allows the following query:
-  type Query {
-    ownedBoards ( userId: Int! ): [Board]
-    otherBoards ( userId: Int! ): [Board]
+  extend type Query {
+    ownedBoards(userId: ID!): [Board]
+    otherBoards(userId: ID!): [Board]
   }
 
   # this schema allows the following mutation:
-  type Mutation {
-    createBoard ( name: String!, owner: Int! ): Board
-    createList ( name: String!, boardId: Int! ): List
-    createCard ( name: String!, description: String, tags: String, 
-      listId:Int! ): Card
-    addCardComment ( text: String!, userId: Int!, cardId: Int! ): Card
-    addBoardMember ( email: String!, boardId: Int! ): Board
-    addCardMember ( userId: Int!, boardId: Int!, cardId: Int! ): Card
-    removeCardMember ( userId: Int!, boardId: Int!, cardId: Int! ): Card
+  extend type Mutation {
+    createBoard(name: String!, owner: ID): Board
+    createList(name: String!, boardId: ID!): List
+    createCard(
+      name: String!
+      description: String
+      tags: String
+      listId: ID!
+    ): Card
+    addCardComment(text: String!, userId: ID!, cardId: ID!): Card
+    addBoardMember(email: String!, boardId: ID!): Board
+    addCardMember(userId: ID!, boardId: ID!, cardId: ID!): Card
+    removeCardMember(userId: ID!, boardId: ID!, cardId: ID!): Card
+  }
+
+  extend type Subscription {
+    boardCreated: Board
   }
 `;
-
-module.exports = Board;

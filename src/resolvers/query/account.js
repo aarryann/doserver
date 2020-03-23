@@ -1,13 +1,11 @@
-const Account = require('../../models/account.js');
+import Account from "../../models/account.js";
 
-const AccountQuery = {
+export default {
   user: async (_, { id }, ctx) => {
     return Account.getUserDetails(ctx.conn.knex, id);
   },
 
   currentUser: async (_p, _a, ctx) => {
-    return Account.currentUser(ctx.conn.knex, ctx.userId, ctx.token );
+    return Account.currentUser(ctx.conn.knex, ctx.token);
   }
-}
-
-module.exports = { AccountQuery }
+};

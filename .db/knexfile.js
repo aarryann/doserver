@@ -1,14 +1,12 @@
 // Update with your config settings.
 
 module.exports = {
-
   development: {
-    client: 'mysql2',
+    client: 'pg',
     connection: {
-      database: 'doapp',
-      user:     'appuser',
+      database: 'doweb2',
+      user: 'appuser',
       password: 'appuserpw'
     }
-  },
-
+  }
 };
