@@ -8,24 +8,25 @@ import typeDefs from "./typedefs";
 import { getMe, knex, pubsub } from "./helpers/utils";
 import cors from "cors";
 
+/*
 const corsOptions = {
-  origin: "http://localhost:4812",
+  origin: "http://localhost:3000",
   optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
 };
-/*
-const whitelist = ['http://localhost:4812', 'http://localhost:4813']
+*/
+const whitelist = ['http://localhost:3000', 'http://localhost:4812', 'http://localhost:4811']
 const corsOptions = {
   origin: function (origin, callback) {
-    if (whitelist.indexOf(origin) !== -1) {
+    if (whitelist.indexOf(origin) !== -1 || !origin) {
       callback(null, true)
     } else {
-      callback(new Error('Not allowed by CORS'))
+      callback(new Error(`Not allowed by CORS - Origin - ${origin}`))
     }
   },
   optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
 }
-*/
 const app = express();
+app.options('*', cors()) // include before other routes
 app.use("*", cors(corsOptions));
 const PORT = process.env.PORT || 4811;
 

@@ -3,10 +3,6 @@
 module.exports = {
   development: {
     client: 'pg',
-    connection: {
-      database: 'doweb2',
-      user: 'appuser',
-      password: 'appuserpw'
-    }
+    connection:'postgres://appuser:appuserpw@localhost:5432/doweb2'
   }
 };
